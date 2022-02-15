@@ -1,0 +1,15 @@
+pt/ipleiria/estg/dei/ei/UpFeed/entities/User.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/StudyRoom.class
+pt/ipleiria/estg/dei/ei/UpFeed/ejbs/ConfigBean.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Category.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Person.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Student.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Administrator.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Room.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Grade.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/SubjectRoom.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Teacher.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Post.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Note.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Channel.class
+pt/ipleiria/estg/dei/ei/UpFeed/utils/Hour.class
