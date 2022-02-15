@@ -32,8 +32,8 @@ public class Student extends User implements Serializable {
         this.grades = new LinkedList<>();
         this.rooms = new LinkedList<>();
     }
-    public Student(Long id, String name, String email, String password) {
-        super(id,name,email,password);
+    public Student(String name, String email, String password) {
+        super(name,email,password);
         this.grades = new LinkedList<>();
         this.rooms = new LinkedList<>();
     }

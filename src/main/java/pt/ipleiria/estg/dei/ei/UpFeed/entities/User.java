@@ -26,8 +26,8 @@ public abstract class User extends Person implements Serializable{
         this.posts = new LinkedList<>();
         this.channels = new LinkedList<>();
     }
-    public User(Long id, String name, String email, String password) {
-        super(id,name,email,password);
+    public User(String name, String email, String password) {
+        super(name,email,password);
         this.notes = new LinkedList<>();
         this.categories = new LinkedList<>();
         this.posts = new LinkedList<>();

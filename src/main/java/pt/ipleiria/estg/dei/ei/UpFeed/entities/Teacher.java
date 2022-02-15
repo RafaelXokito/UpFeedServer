@@ -21,7 +21,7 @@ public class Teacher extends User implements Serializable {
     public Teacher() {
         super();
     }
-    public Teacher(Long id, String name, String email, String password) {
-        super(id,name,email,password);
+    public Teacher(String name, String email, String password) {
+        super(name,email,password);
     }
 }
