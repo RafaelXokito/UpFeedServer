@@ -85,7 +85,7 @@ public class AdministratorBean {
 
 
     /***
-     * Delete a Administrator by given @Id:id - Change deleted_at field to NOW() date
+     * Delete a Administrator by given @Id:id
      * @param id @Id to find the proposal delete Administrator
      */
     public boolean delete(long id) throws Exception{

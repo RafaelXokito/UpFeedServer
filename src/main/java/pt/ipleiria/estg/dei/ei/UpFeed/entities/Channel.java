@@ -6,6 +6,12 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllChannels",
+                query = "SELECT channel FROM Channel channel ORDER BY channel.title"
+        )
+})
 @Table(name = "CHANNELS")
 @Entity
 public class Channel implements Serializable {
@@ -27,6 +33,9 @@ public class Channel implements Serializable {
     @NotNull
     @OneToMany(mappedBy = "channel", cascade = CascadeType.REMOVE)
     private List<Room> rooms;
+
+    @Version
+    private int version;
 
     public Channel() {
         this.rooms = new LinkedList<>();

@@ -1,5 +1,6 @@
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyUnauthorizedExceptionMapper.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/providers/CorsFilter.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/dtos/ChannelDTO.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/StudyRoom.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ejbs/AdministratorBean.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Channel.java
@@ -25,10 +26,13 @@
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityNotFoundException.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Category.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyUnauthorizedException.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/dtos/UserDTO.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ejbs/TeacherBean.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityExistsException.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyIllegalArgumentExceptionMapper.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ws/ChannelService.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyConstraintViolationException.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/utils/Hour.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Administrator.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Note.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ejbs/ChannelBean.java

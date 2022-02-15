@@ -19,6 +19,9 @@ public class ConfigBean {
     @EJB
     TeacherBean teacherBean;
 
+    @EJB
+    ChannelBean channelBean;
+
     // Pay attention to the correct import: import java.util.logging.Logger;
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 
@@ -43,6 +46,14 @@ public class ConfigBean {
             teacherBean.update(teacherCarlos,"CarlosGrilo@my.ipleiria.pt","Carlos Grilo");
             System.out.println("## Deleting Teachers ");
             //teacherBean.delete(teacherCarlos);
+
+            System.out.println("# Channels ");
+            System.out.println("## Creating Channel ");
+            long channelDAE = channelBean.create(teacherCarlos,"DAE","DAE", true, 6);
+            System.out.println("## Updating Channel ");
+            channelBean.update(channelDAE,"DAE","Desenvolvimento de Aplicações Empresariais", 6);
+            System.out.println("## Deleting Channel ");
+            channelBean.delete(channelDAE);
 
         }catch (Exception e){
             logger.log(Level.SEVERE, e.getMessage());

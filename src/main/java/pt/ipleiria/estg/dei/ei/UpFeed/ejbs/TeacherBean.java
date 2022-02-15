@@ -84,7 +84,7 @@ public class TeacherBean {
 
 
     /***
-     * Delete a Teacher by given @Id:id - Change deleted_at field to NOW() date
+     * Delete a Teacher by given @Id:id
      * @param id @Id to find the proposal delete Teacher
      */
     public boolean delete(long id) throws Exception{
