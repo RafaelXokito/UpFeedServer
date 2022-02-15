@@ -46,7 +46,7 @@ public class ChannelService {
     @Path("/")
     public Response createChannelWS(ChannelDTO channelDTO) throws Exception {
         long id = channelBean.create(
-                2L,
+                2L, //TODO  - GETS THE AUTHENTICATED USER ID
                 channelDTO.getTitle(),
                 channelDTO.getDescription(),
                 channelDTO.getType(),
