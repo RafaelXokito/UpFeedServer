@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name = "ROOMS")
 @Entity
 //TODO Inheritance
-public class Room implements Serializable {
+public abstract class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
