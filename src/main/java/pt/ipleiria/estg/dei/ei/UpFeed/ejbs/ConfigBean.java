@@ -2,6 +2,9 @@ package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Student;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Administrator;
+import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
+import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyIllegalArgumentException;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -28,7 +31,7 @@ public class ConfigBean {
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 
     @PostConstruct
-    public void populateDB() {
+    public void populateDB() throws MyEntityNotFoundException, MyIllegalArgumentException, MyConstraintViolationException {
         System.out.println("Starting Point!");
 
         studentBean.create("Carla Mendes", "1112@my.ipleiria.pt", "1234");
@@ -72,7 +75,7 @@ public class ConfigBean {
             logger.log(Level.SEVERE, e.getMessage());
         }
 
-        studentBean.delete(6);
+        studentBean.delete(1);
     }
 
 
