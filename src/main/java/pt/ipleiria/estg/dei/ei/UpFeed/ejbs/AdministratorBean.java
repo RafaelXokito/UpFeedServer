@@ -27,9 +27,9 @@ public class AdministratorBean {
     }
 
     /***
-     * Find Administrator by given @Unique:Email
-     * @param email @Id to find Administrator
-     * @return founded Administrator or Null if dont
+     * Find Person by given @Unique:Email
+     * @param email @Id to find Person
+     * @return founded Person or Null if dont
      */
     public Person findPerson(String email) {
         TypedQuery<Person> query = entityManager.createQuery("SELECT p FROM Person p WHERE p.email = '" + email + "'", Person.class);
