@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 pt\ipleiria\estg\dei\ei\UpFeed\ejbs\ConfigBean.class
 pt\ipleiria\estg\dei\ei\UpFeed\utils\Hour.class
 pt\ipleiria\estg\dei\ei\UpFeed\entities\Grade.class
@@ -14,3 +15,39 @@ pt\ipleiria\estg\dei\ei\UpFeed\entities\Teacher.class
 pt\ipleiria\estg\dei\ei\UpFeed\entities\StudyRoom.class
 pt\ipleiria\estg\dei\ei\UpFeed\entities\SubjectRoom.class
 pt\ipleiria\estg\dei\ei\UpFeed\entities\User.class
+=======
+pt/ipleiria/estg/dei/ei/UpFeed/entities/User.class
+pt/ipleiria/estg/dei/ei/UpFeed/ws/AdministratorService.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Person.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Student.class
+pt/ipleiria/estg/dei/ei/UpFeed/providers/CorsFilter.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyUnauthorizedException.class
+pt/ipleiria/estg/dei/ei/UpFeed/dtos/AdministratorDTO.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Grade.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/SubjectRoom.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Teacher.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Note.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyIllegalArgumentException.class
+pt/ipleiria/estg/dei/ei/UpFeed/ejbs/AdministratorBean.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyConstraintViolationException.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityExistsException.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/StudyRoom.class
+pt/ipleiria/estg/dei/ei/UpFeed/ws/TeacherService.class
+pt/ipleiria/estg/dei/ei/UpFeed/ejbs/ConfigBean.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Category.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityNotFoundExceptionMapper.class
+pt/ipleiria/estg/dei/ei/UpFeed/dtos/TeacherDTO.class
+pt/ipleiria/estg/dei/ei/UpFeed/ejbs/TeacherBean.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyUnauthorizedExceptionMapper.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Administrator.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Room.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityNotFoundException.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyConstraintViolationExceptionMapper.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityExistsExceptionMapper.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Post.class
+pt/ipleiria/estg/dei/ei/UpFeed/UpFeedApplication.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/CatchAllExceptionMapper.class
+pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyIllegalArgumentExceptionMapper.class
+pt/ipleiria/estg/dei/ei/UpFeed/entities/Channel.class
+pt/ipleiria/estg/dei/ei/UpFeed/utils/Hour.class
+>>>>>>> main

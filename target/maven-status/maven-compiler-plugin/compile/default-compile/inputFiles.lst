@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ejbs\StudentBean.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\entities\Teacher.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\entities\Post.java
@@ -14,3 +15,39 @@ C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ent
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\entities\SubjectRoom.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\entities\Category.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\entities\Person.java
+=======
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyUnauthorizedExceptionMapper.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/providers/CorsFilter.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/StudyRoom.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ejbs/AdministratorBean.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Channel.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ws/AdministratorService.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyIllegalArgumentException.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Person.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Post.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/dtos/TeacherDTO.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/User.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityExistsExceptionMapper.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/dtos/AdministratorDTO.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/UpFeedApplication.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/SubjectRoom.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Teacher.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Student.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Grade.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ejbs/ConfigBean.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ws/TeacherService.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/CatchAllExceptionMapper.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Room.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityNotFoundExceptionMapper.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyConstraintViolationExceptionMapper.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityNotFoundException.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Category.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyUnauthorizedException.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ejbs/TeacherBean.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityExistsException.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyIllegalArgumentExceptionMapper.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyConstraintViolationException.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/utils/Hour.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Administrator.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Note.java
+>>>>>>> main

@@ -30,6 +30,10 @@ public abstract class Person {
     @NotNull
     private String password;
 
+
+    @Version
+    private int version;
+
     public Person(){
 
     }
