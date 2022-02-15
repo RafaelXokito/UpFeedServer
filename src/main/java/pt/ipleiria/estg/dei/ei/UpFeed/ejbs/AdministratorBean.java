@@ -2,6 +2,8 @@ package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Administrator;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Person;
+import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
+import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyIllegalArgumentException;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
@@ -19,10 +21,10 @@ public class AdministratorBean {
      * @param id @Id to find Administrator
      * @return founded Administrator or Null if dont
      */
-    public Administrator findAdministrator(long id) {
+    public Administrator findAdministrator(long id) throws Exception {
         Administrator administrator = entityManager.find(Administrator.class, id);
         if (administrator == null)
-            throw new EntityNotFoundException("Administrator \"" + id + "\" does not exist");
+            throw new MyEntityNotFoundException("Administrator \"" + id + "\" does not exist");
         return administrator;
     }
 
@@ -51,31 +53,31 @@ public class AdministratorBean {
      * @param password of administrator acc
      * @param name of administrator acc
      */
-    public long create(String email, String password, String name)  {
+    public long create(String email, String password, String name) throws Exception {
 
         //REQUIRED VALIDATION
         if (email == null || email.trim().isEmpty())
-            throw new IllegalArgumentException("Field \"email\" is required");
+            throw new MyIllegalArgumentException("Field \"email\" is required");
         if (password == null || password.trim().isEmpty())
-            throw new IllegalArgumentException("Field \"password\" is required");
+            throw new MyIllegalArgumentException("Field \"password\" is required");
         if (name == null || name.trim().isEmpty())
-            throw new IllegalArgumentException("Field \"name\" is required");
+            throw new MyIllegalArgumentException("Field \"name\" is required");
 
         //CHECK VALUES
         Person person = findPerson(email);
         if (person != null)
-            throw new IllegalArgumentException("Person with email of \"" + email + "\" already exist");
+            throw new MyIllegalArgumentException("Person with email of \"" + email + "\" already exist");
         if (password.trim().length() < 4)
-            throw new IllegalArgumentException("Field \"password\" must have at least 4 characters");
+            throw new MyIllegalArgumentException("Field \"password\" must have at least 4 characters");
         if (name.trim().length() < 6)
-            throw new IllegalArgumentException("Field \"name\" must have at least 6 characters");
+            throw new MyIllegalArgumentException("Field \"name\" must have at least 6 characters");
 
         Administrator newAdministrator = new Administrator(name.trim(), email.trim(), password.trim());
         try {
             entityManager.persist(newAdministrator);
             entityManager.flush();
         }catch (Exception ex){
-            throw new IllegalArgumentException("Error persisting your data");
+            throw new MyIllegalArgumentException("Error persisting your data");
         }
 
         return newAdministrator.getId();
@@ -86,7 +88,7 @@ public class AdministratorBean {
      * Delete a Administrator by given @Id:id - Change deleted_at field to NOW() date
      * @param id @Id to find the proposal delete Administrator
      */
-    public boolean delete(long id) {
+    public boolean delete(long id) throws Exception{
         Administrator administrator = findAdministrator(id);
 
         entityManager.remove(administrator);
@@ -98,21 +100,21 @@ public class AdministratorBean {
      * @param email @Id to find the proposal update Administrator
      * @param name to update Administrator
      */
-    public void update(long id, String email, String name) {
+    public void update(long id, String email, String name) throws Exception {
         Administrator administrator = findAdministrator(id);
 
         //REQUIRED VALIDATION
         if (email == null || email.trim().isEmpty())
-            throw new IllegalArgumentException("Field \"email\" is required");
+            throw new MyIllegalArgumentException("Field \"email\" is required");
         if (name == null || name.trim().isEmpty())
-            throw new IllegalArgumentException("Field \"name\" is required");
+            throw new MyIllegalArgumentException("Field \"name\" is required");
 
         //CHECK VALUES
         Person person = findPerson(email);
         if (person != null && person.getId() != id)
-            throw new IllegalArgumentException("Person with email of \"" + email + "\" already exist");
+            throw new MyIllegalArgumentException("Person with email of \"" + email + "\" already exist");
         if (name.trim().length() < 6)
-            throw new IllegalArgumentException("Field \"name\" must have at least 6 characters");
+            throw new MyIllegalArgumentException("Field \"name\" must have at least 6 characters");
 
         entityManager.lock(administrator, LockModeType.PESSIMISTIC_FORCE_INCREMENT);
         administrator.setEmail(email.trim());
@@ -121,7 +123,7 @@ public class AdministratorBean {
         try {
             entityManager.flush();
         }catch (Exception ex){
-            throw new IllegalArgumentException("Error updating Administrator");
+            throw new MyIllegalArgumentException("Error updating Administrator");
         }
     }
 
