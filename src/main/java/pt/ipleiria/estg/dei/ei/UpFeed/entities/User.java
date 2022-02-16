@@ -67,7 +67,7 @@ public abstract class User extends Person implements Serializable{
         categories.add(category);
     }
 
-    public void removeCategory(Note category){
+    public void removeCategory(Category category){
         if(category == null || !categories.contains(category)){
             return;
         }
