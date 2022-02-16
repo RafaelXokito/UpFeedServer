@@ -1,9 +1,6 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.Category;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.Student;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.Administrator;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.SubjectRoom;
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.*;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyIllegalArgumentException;
@@ -57,6 +54,7 @@ public class ConfigBean {
             System.out.println("# Teachers ");
             System.out.println("## Creating Teachers ");
             long teacherCarlos = teacherBean.create("CarlosGrilo@hotmail.com","1234","Carlos Grilo");
+            long teacherRicardoMartinho = teacherBean.create("RicardoMartinho@my.ipleiria.pt","1234","Ricardo Martinho");
             System.out.println("## Updating Teachers ");
             teacherBean.update(teacherCarlos,"CarlosGrilo@my.ipleiria.pt","Carlos Grilo");
             System.out.println("## Deleting Teachers ");
@@ -106,11 +104,24 @@ public class ConfigBean {
 
             System.out.println("# Channels ");
             System.out.println("## Creating Channel ");
-            long channelDAE = channelBean.create(teacherCarlos,"DAE","DAE", true, 6);
+            long channelDAE = channelBean.create(teacherRicardoMartinho,"DAE","DAE", true, 6);
             System.out.println("## Updating Channel ");
             channelBean.update(channelDAE,"DAE","Desenvolvimento de Aplicações Empresariais", 6);
             System.out.println("## Deleting Channel ");
             //channelBean.delete(channelDAE);
+            System.out.println("## Adding Users to Channel ");
+            channelBean.addUserToChannel(channelDAE,"CarlosGrilo@my.ipleiria.pt");
+            channelBean.addUserToChannel(channelDAE,"1113@my.ipleiria.pt");
+            channelBean.addUserToChannel(channelDAE,"1114@my.ipleiria.pt");
+            channelBean.addUserToChannel(channelDAE,"1115@my.ipleiria.pt");
+
+            System.out.println("## Reading Users to Channel (DAE) ");
+            Channel objChannelDAE = channelBean.findChannel(channelDAE);
+            System.out.println(objChannelDAE.getTitle() + " | Owner - " + objChannelDAE.getOwner().getName());
+            System.out.println("----------------------------");
+            for (User user:channelBean.findChannelUsers(channelDAE)){
+                System.out.println(user.getName());
+            }
 
             System.out.println("# SubjectRooms ");
             System.out.println("## Creating SubjectRoom ");

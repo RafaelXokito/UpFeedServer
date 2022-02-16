@@ -13,20 +13,16 @@ import java.util.List;
 public abstract class User extends Person implements Serializable{
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Note> notes;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Category> categories;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Post> posts;
+
     //Relation of channels that this user are owner dont need to be present
     @ManyToMany
     private List<Channel> channels;
-
-    @ManyToMany
-    @JoinTable(name = "students_rooms",
-            joinColumns = @JoinColumn(name = "studentId", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "roomId", referencedColumnName =
-                    "id"))
-    private List<Room> rooms;
 
     public User() {
         super();
@@ -34,7 +30,6 @@ public abstract class User extends Person implements Serializable{
         this.notes = new LinkedList<>();
         this.posts = new LinkedList<>();
         this.channels = new LinkedList<>();
-        this.rooms = new LinkedList<>();
     }
     public User(String name, String email, String password) {
         super(name,email,password);
@@ -42,7 +37,6 @@ public abstract class User extends Person implements Serializable{
         this.categories = new LinkedList<>();
         this.posts = new LinkedList<>();
         this.channels = new LinkedList<>();
-        this.rooms = new LinkedList<>();
     }
     public List<Note> getNotes() {
         return notes;
@@ -123,28 +117,5 @@ public abstract class User extends Person implements Serializable{
             return;
         }
         channels.remove(channel);
-    }
-
-
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
-    }
-
-    public void addRoom(Room room){
-        if(room == null || rooms.contains(room)){
-            return;
-        }
-        rooms.add(room);
-    }
-
-    public void removeRoom(Room room){
-        if(room == null || !rooms.contains(room)){
-            return;
-        }
-        rooms.remove(room);
     }
 }

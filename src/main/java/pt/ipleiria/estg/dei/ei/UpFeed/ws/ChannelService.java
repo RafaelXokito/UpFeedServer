@@ -101,7 +101,12 @@ public class ChannelService {
                 channel.getTitle(),
                 channel.getDescription(),
                 channel.getType(),
-                channel.getWeight());
+                channel.getWeight(),
+                usersToDTOs(channel.getUsers()));
+    }
+
+    private List<UserDTO> usersToDTOs(List<User> users) {
+        return users.stream().map(this::userToDTO).collect(Collectors.toList());
     }
 
     private UserDTO userToDTO(User user) {

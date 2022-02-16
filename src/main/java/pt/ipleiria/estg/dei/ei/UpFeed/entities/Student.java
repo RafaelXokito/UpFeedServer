@@ -20,14 +20,22 @@ public class Student extends User implements Serializable {
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
     private List<Grade> grades;
 
+    @ManyToMany
+    @JoinTable(name = "students_rooms",
+            joinColumns = @JoinColumn(name = "studentId", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "roomId", referencedColumnName =
+                    "id"))
+    private List<Room> rooms;
 
     public Student() {
         super();
         this.grades = new LinkedList<>();
+        this.rooms = new LinkedList<>();
     }
     public Student(String name, String email, String password) {
         super(name,email,password);
         this.grades = new LinkedList<>();
+        this.rooms = new LinkedList<>();
     }
 
     public List<Grade> getGrades() {
@@ -50,5 +58,27 @@ public class Student extends User implements Serializable {
             return;
         }
         grades.remove(grade);
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public void addRoom(Room room){
+        if(room == null || rooms.contains(room)){
+            return;
+        }
+        rooms.add(room);
+    }
+
+    public void removeRoom(Room room){
+        if(room == null || !rooms.contains(room)){
+            return;
+        }
+        rooms.remove(room);
     }
 }

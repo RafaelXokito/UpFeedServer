@@ -71,6 +71,9 @@ public class SubjectRoomBean {
         Channel channel = entityManager.find(Channel.class, channelId);
         if (channel.getType() != Channel.TeacherChannel)
             throw new MyIllegalArgumentException("Invalid \"channel\", must be a teacher channel");
+        if (!channel.getUsers().contains(teacher))
+            throw new MyIllegalArgumentException("Invalid \"teacher\", this teacher");
+
 
         SubjectRoom newSubjectRoom = new SubjectRoom(title.trim(), description, channel, weight, teacher);
         try {
