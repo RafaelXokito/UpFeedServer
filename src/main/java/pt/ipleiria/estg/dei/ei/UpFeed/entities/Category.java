@@ -6,6 +6,13 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllCategories",
+                query = "SELECT c FROM Category c ORDER BY c.id"
+        )
+})
+
 @Table(name = "CATEGORIES")
 @Entity
 public class Category implements Serializable {

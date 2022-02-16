@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.Category;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Student;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Administrator;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyConstraintViolationException;
@@ -30,33 +31,50 @@ public class ConfigBean {
     @EJB
     ChannelBean channelBean;
 
+    @EJB
+    CategoryBean categoryBean;
+
     // Pay attention to the correct import: import java.util.logging.Logger;
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 
     @PostConstruct
     public void populateDB() throws MyEntityNotFoundException, MyIllegalArgumentException, MyConstraintViolationException {
         System.out.println("Starting Point!");
-
-        studentBean.create("Carla Mendes", "1112@my.ipleiria.pt", "1234");
-        studentBean.create("Rafael Pereira", "1113@my.ipleiria.pt", "1234");
-        studentBean.create("Bruna Leitão", "1114@my.ipleiria.pt", "1234");
-        studentBean.create("Carlos Costa", "1115@my.ipleiria.pt", "1234");
-        studentBean.create("Fábio Gaspar", "1116@my.ipleiria.pt", "1234");
-        studentBean.create("Daniel Carreira", "1117@my.ipleiria.pt", "1234");
-
-
-        Student student = studentBean.findStudent(2);
-        System.out.println("Find - "+ student.getName());
-        List<Student> studentsList = studentBean.getAllStudents();
-        for (Student s:studentsList){
-            System.out.println(s.getName());
-        }
-
-        studentBean.update(1, "Carla Sofia Crespo Mendes", "1111@my.ipleiria.pt");
-        studentBean.update(4, "Carlos Pereira Martinho da Costa", "");
-
         try {
-            System.out.println("Starting Point!");
+            studentBean.create("Carla Mendes", "1112@my.ipleiria.pt", "1234");
+            studentBean.create("Rafael Pereira", "1113@my.ipleiria.pt", "1234");
+            studentBean.create("Bruna Leitão", "1114@my.ipleiria.pt", "1234");
+            studentBean.create("Carlos Costa", "1115@my.ipleiria.pt", "1234");
+            studentBean.create("Fábio Gaspar", "1116@my.ipleiria.pt", "1234");
+            studentBean.create("Daniel Carreira", "1117@my.ipleiria.pt", "1234");
+
+
+            Student student = studentBean.findStudent(2);
+            System.out.println("Find - "+ student.getName());
+            List<Student> studentsList = studentBean.getAllStudents();
+            for (Student s:studentsList){
+                System.out.println(s.getName());
+            }
+
+            studentBean.update(1, "Carla Sofia Crespo Mendes", "1111@my.ipleiria.pt");
+            studentBean.update(4, "Carlos Pereira Martinho da Costa", "");
+            studentBean.delete(1);
+
+            System.out.println("# Categories");
+            long id1 = categoryBean.create("1113@my.ipleiria.pt", "DAE");
+            long id2 = categoryBean.create("1116@my.ipleiria.pt", "SAD");
+            long id3 = categoryBean.create("1117@my.ipleiria.pt", "DAD");
+            long id4 = categoryBean.create("1114@my.ipleiria.pt", "TAES");
+
+            Category category = categoryBean.find(id1);
+            System.out.println("Find - "+ id1 + " | " + category.getName());
+
+            List<Category> categories = categoryBean.getAllCategories();
+            for (Category c:categories){
+                System.out.println(c.getName() + " | " + c.getOwner().getName());
+            }
+            categoryBean.update(id4, "Advanced Topics of Software Enginnering");
+            categoryBean.delete(id3);
 
             System.out.println("# Administrators ");
             System.out.println("## Creating Administrators ");
@@ -85,8 +103,6 @@ public class ConfigBean {
         }catch (Exception e){
             logger.log(Level.SEVERE, e.getMessage());
         }
-
-        studentBean.delete(1);
     }
 
 
