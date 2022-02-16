@@ -1,5 +1,6 @@
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\dtos\TeacherDTO.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\exceptions\MyUnauthorizedException.java
+C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\dtos\NoteDTO.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ejbs\StudentBean.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\exceptions\MyConstraintViolationException.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ejbs\ConfigBean.java
@@ -13,6 +14,7 @@ C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ent
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ejbs\CategoryBean.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\entities\Note.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\exceptions\CatchAllExceptionMapper.java
+C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ws\NoteService.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\entities\StudyRoom.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ejbs\AdministratorBean.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\entities\Teacher.java
@@ -33,6 +35,7 @@ C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\exc
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ws\ChannelService.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\utils\Hour.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\providers\CorsFilter.java
+C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ejbs\NoteBean.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\ejbs\ChannelBean.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\entities\SubjectRoom.java
 C:\projects\UpFeed\UpFeedServer\src\main\java\pt\ipleiria\estg\dei\ei\UpFeed\dtos\ChannelDTO.java

@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Category;
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.Note;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Student;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Administrator;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyConstraintViolationException;
@@ -33,6 +34,9 @@ public class ConfigBean {
 
     @EJB
     CategoryBean categoryBean;
+
+    @EJB
+    NoteBean noteBean;
 
     // Pay attention to the correct import: import java.util.logging.Logger;
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
@@ -75,6 +79,20 @@ public class ConfigBean {
             }
             categoryBean.update(id4, "Advanced Topics of Software Enginnering");
             categoryBean.delete(id3);
+
+            System.out.println("# Notes");
+            long noteBruna = noteBean.create("1114@my.ipleiria.pt","TAES Project", "Do US12",false,4);
+            long noteFabio = noteBean.create("1116@my.ipleiria.pt","SAD Practice exam study", "Do the Transform phase",true, 2);
+            long noteRafael = noteBean.create("1113@my.ipleiria.pt", "DAE Theoric class study", "Chapters 3 and 4",false, 1);
+            Note noteFind = noteBean.find(noteFabio);
+            System.out.println("Find - "+ noteFabio + " | " + noteFind.getTitle());
+
+            List<Note> notes = noteBean.getAllNotes();
+            for (Note note:notes){
+                System.out.println(note.getTitle() + " | " + note.getOwner().getName());
+            }
+            noteBean.update(noteBruna,"TAES - Finish US21", "do the katalon tests also");
+            noteBean.delete(noteRafael);
 
             System.out.println("# Administrators ");
             System.out.println("## Creating Administrators ");

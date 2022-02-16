@@ -4,6 +4,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllNotes",
+                query = "SELECT n FROM Note n ORDER BY n.id"
+        )
+})
 @Table(name = "NOTES")
 @Entity
 public class Note implements Serializable {
@@ -40,6 +46,7 @@ public class Note implements Serializable {
         this(title, owner, description, status, category);
         this.id = id;
     }
+
 
     public Long getId() {
         return id;

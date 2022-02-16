@@ -57,7 +57,6 @@ public class StudentBean {
         if(email != null && !email.equals("") && !student.getEmail().equals(email)){
             student.setEmail(email);
         }
-        entityManager.merge(student);
     }
 
     public boolean delete(long id) throws MyEntityNotFoundException {

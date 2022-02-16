@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Category;
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.Note;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.User;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyIllegalArgumentException;
@@ -16,7 +17,7 @@ import java.util.List;
 public class CategoryBean {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public long create(String emailOwner, String name) throws MyIllegalArgumentException, MyEntityNotFoundException {
         if(emailOwner == null || emailOwner.equals("")){
@@ -35,7 +36,7 @@ public class CategoryBean {
         return category.getId();
     }
 
-    public User findUser(String email) {
+    private User findUser(String email) {
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = '" + email + "'", User.class);
         query.setLockMode(LockModeType.OPTIMISTIC);
         return query.getResultList().size() > 0 ? query.getSingleResult() : null;
@@ -59,13 +60,12 @@ public class CategoryBean {
         if(name != null && !name.equals("") && !category.getName().equals(name)){
             category.setName(name);
         }
-        entityManager.merge(category);
     }
 
     public boolean delete(long id) throws MyEntityNotFoundException {
         Category category = find(id);
         entityManager.lock(category, LockModeType.PESSIMISTIC_READ);
-        entityManager.remove(category);
+        entityManager.remove(category);//remove the categories from the notes
         return entityManager.find(Category.class,id) == null;
     }
 }
