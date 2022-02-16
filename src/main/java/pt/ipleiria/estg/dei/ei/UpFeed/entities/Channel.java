@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.UpFeed.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class Channel implements Serializable {
     private String title;
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "ownerUserId")
     private User owner;
     @NotNull
     private String description;
@@ -30,15 +31,22 @@ public class Channel implements Serializable {
     private Boolean type;
     @NotNull
     private int weight;
-    @NotNull
+
     @OneToMany(mappedBy = "channel", cascade = CascadeType.REMOVE)
     private List<Room> rooms;
+
+    @ManyToMany(mappedBy = "channels")
+    private List<User> users;
 
     @Version
     private int version;
 
+    public static boolean TeacherChannel = true;
+    public static boolean StudentChannel = false;
+
     public Channel() {
-        this.rooms = new LinkedList<>();
+        this.rooms = new ArrayList<>();
+        this.users = new ArrayList<>();
     }
 
     public Channel(String title, User owner, String description, Boolean type, int weight) {
@@ -121,5 +129,26 @@ public class Channel implements Serializable {
             return;
         }
         rooms.remove(room);
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+    public void addUsers(User user){
+        if(user == null || users.contains(user)){
+            return;
+        }
+        users.add(user);
+    }
+
+    public void removeUsers(User user){
+        if(user == null || !users.contains(user)){
+            return;
+        }
+        users.remove(user);
     }
 }

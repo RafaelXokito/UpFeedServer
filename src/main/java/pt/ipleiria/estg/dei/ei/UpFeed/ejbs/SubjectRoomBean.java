@@ -36,6 +36,11 @@ public class SubjectRoomBean {
         return entityManager.createNamedQuery("getAllSubjectRooms", SubjectRoom.class).setLockMode(LockModeType.OPTIMISTIC).getResultList();
     }
 
+    /**
+     * Find teacher based on given email
+     * @param email email to find teacher
+     * @return Teacher object founded or null if dont
+     */
     public Teacher findTeacher(String email) {
         TypedQuery<Teacher> query = entityManager.createQuery("SELECT t FROM Teacher t WHERE t.email = '" + email + "'", Teacher.class);
         query.setLockMode(LockModeType.OPTIMISTIC);
@@ -64,6 +69,8 @@ public class SubjectRoomBean {
         Teacher teacher = findTeacher(teacherEmail);
 
         Channel channel = entityManager.find(Channel.class, channelId);
+        if (channel.getType() != Channel.TeacherChannel)
+            throw new MyIllegalArgumentException("Invalid \"channel\", must be a teacher channel");
 
         SubjectRoom newSubjectRoom = new SubjectRoom(title.trim(), description, channel, weight, teacher);
         try {

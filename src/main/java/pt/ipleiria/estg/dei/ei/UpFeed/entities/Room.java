@@ -12,15 +12,23 @@ public abstract class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
+
     private String description;
+
     @ManyToMany(mappedBy = "rooms")
     private List<Student> students;
+
     @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
     private List<Post> posts;
+
     @ManyToOne
     @JoinColumn(name = "channelId")
     private Channel channel;
+
+    @Version
+    private int version;
 
     public Room() {
     }

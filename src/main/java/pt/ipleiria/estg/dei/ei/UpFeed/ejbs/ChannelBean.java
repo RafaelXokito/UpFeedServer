@@ -118,7 +118,24 @@ public class ChannelBean {
     public boolean delete(long id) throws Exception{
         Channel channel = findChannel(id);
 
+        for (Room room:channel.getRooms()) {
+            for (User user:room.getStudents()) {
+                user.removeRoom(room);
+            }
+            //we dont need to delete rooms because the CascadeType = REMOVE
+        }
+
+        for (User user:channel.getUsers()) {
+            user.removeChannel(channel);
+        }
+
+        //This is just a double check, when all users are removed from this channel
+        //means that the owner is removed too
+        channel.getOwner().removeChannel(channel);
+
         entityManager.remove(channel);
+        entityManager.flush();
+
         return entityManager.find(Channel.class, id) == null;
     }
 }
