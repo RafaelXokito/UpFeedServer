@@ -95,7 +95,7 @@ public class ConfigBean {
             long categoryDAD = categoryBean.create("1117@my.ipleiria.pt", "DAD");
             long categoryTAES = categoryBean.create("1114@my.ipleiria.pt", "TAES");
 
-            System.out.println("## Find Categories");
+            System.out.println("## Read Categories");
             Category category = categoryBean.find(categoryDAE);
             System.out.println("Find - "+ categoryDAE + " | " + category.getName());
 
@@ -103,8 +103,10 @@ public class ConfigBean {
             for (Category c:categories){
                 System.out.println(c.getName() + " | " + c.getOwner().getName());
             }
-            categoryBean.update(id4, "Advanced Topics of Software Enginnering");
-            categoryBean.delete(id3);
+            System.out.println("## Update Categories");
+            categoryBean.update(categoryTAES, "Advanced Topics of Software Enginnering");
+            System.out.println("## Delete Categories");
+            categoryBean.delete(categoryDAD);
 
             System.out.println("# Notes");
             long noteBruna = noteBean.create("1114@my.ipleiria.pt","TAES Project", "Do US12",false,4);
@@ -119,18 +121,6 @@ public class ConfigBean {
             }
             noteBean.update(noteBruna,"TAES - Finish US21", "do the katalon tests also");
             noteBean.delete(noteRafael);
-
-            System.out.println("# Administrators ");
-            System.out.println("## Creating Administrators ");
-            long adminRafael = administratorBean.create("RafaelPereira@hotmail.com","1234","Rafael Pereira");
-            System.out.println("## Updating Administrators ");
-            administratorBean.update(adminRafael,"RafaelMendesPereira@hotmail.com","Rafael Mendes Pereira");
-            System.out.println("## Deleting Administrators ");
-            //administratorBean.delete(adminRafael);
-
-            System.out.println("## Update Categories");
-            categoryBean.update(categoryTAES, "Advanced Topics of Software Enginnering");
-            categoryBean.delete(categoryDAD);
 
             System.out.println("# Channels ");
             System.out.println("## Creating Channel ");
