@@ -1,6 +1,5 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.entities;
 
-import pt.ipleiria.estg.dei.ei.UpFeed.utils.Hour;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -33,6 +32,7 @@ public class Post implements Serializable {
     @NotNull
     private Boolean type;
     @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     public Post() {
@@ -40,6 +40,8 @@ public class Post implements Serializable {
 
     public Post(User owner, Room room, String title, String description, Boolean type) {
         this.owner = owner;
+        this.room = room;
+        this.title = title;
         this.description = description;
         this.type = type;
         this.date = new Date();

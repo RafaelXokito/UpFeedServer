@@ -32,7 +32,7 @@ public class NoteService {
 
     @GET
     @Path("/{id}")
-    public Response getNoteDetails(@PathParam("id") long id) throws MyEntityNotFoundException {
+    public Response getNoteDetails(@PathParam("id") long id) throws Exception {
         Note note = noteBean.find(id);
         return Response.status(Response.Status.OK)
                 .entity(toDTO(note))
@@ -41,7 +41,7 @@ public class NoteService {
 
     @POST
     @Path("/")
-    public Response createNote(NoteDTO noteDTO) throws MyEntityNotFoundException, MyIllegalArgumentException, MyUnauthorizedException {
+    public Response createNote(NoteDTO noteDTO) throws Exception {
         long id = noteBean.create(noteDTO.getEmailOwner(), noteDTO.getTitle(), noteDTO.getDescription(), noteDTO.getStatus(), noteDTO.getCategoryId());
 
         Note note = noteBean.find(id);
@@ -52,7 +52,7 @@ public class NoteService {
 
     @PUT
     @Path("/{id}")
-    public Response updateNote(@PathParam("id") long id, NoteDTO noteDTO) throws MyEntityNotFoundException {
+    public Response updateNote(@PathParam("id") long id, NoteDTO noteDTO) throws Exception {
         noteBean.update(id, noteDTO.getTitle(), noteDTO.getDescription());
         Note note = noteBean.find(id);
         return Response.status(Response.Status.OK)
@@ -63,7 +63,7 @@ public class NoteService {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteNote(@PathParam("id") long id) throws MyEntityNotFoundException {
+    public Response deleteNote(@PathParam("id") long id) throws Exception {
         Note note = noteBean.find(id);
         if(noteBean.delete(id)){
             return Response.status(Response.Status.OK)

@@ -40,7 +40,10 @@ public class ConfigBean {
     
     @EJB
     StudyRoomBean studyRoomBean;
-    
+
+    @EJB
+    PostBean postBean;
+
     // Pay attention to the correct import: import java.util.logging.Logger;
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 
@@ -213,7 +216,26 @@ public class ConfigBean {
                     System.out.println(user.getName());
                 }
             }
+            System.out.println("## Posts");
+            long postBruna = postBean.create("1114@my.ipleiria.pt","Materiais de estudo de TAES",
+                    "Estão aqui ps pdf com os meus apontamentos das aulas de TAES", false, studyRoom3AnoStudent);
+            long postFabio = postBean.create("1116@my.ipleiria.pt","Exame de SAD resolvido",
+                    "dps podemos comparar as resolucoes, so n tenho a certeza da parte da transformacao", false, studyRoom3AnoStudent);
+            long postRafael =  postBean.create("1113@my.ipleiria.pt","Escolhas multiplas de DAE",
+                    "dps digam qual opcao meteram na 12", false, studyRoom3AnoStudent);
 
+            System.out.println("## Read Posts");
+            Post post = postBean.find(postBruna);
+            System.out.println("Find - "+ postBruna + " | " + post.getTitle());
+
+            List<Post> posts = postBean.getAllPosts();
+            for (Post p:posts){
+                System.out.println(p.getTitle() + " | " + p.getOwner().getName());
+            }
+            System.out.println("## Update posts");
+            postBean.update(postRafael, "Escolhas multiplas do 2 Teste Teorico de DAE", "dps digam qual opcao meteram na 12 e na 3");
+            System.out.println("## Delete post");
+            postBean.delete(postFabio);
 
         }catch (Exception e){
             logger.log(Level.SEVERE, e.getMessage());

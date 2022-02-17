@@ -26,7 +26,7 @@ public class StudentBean {
      * @throws MyConstraintViolationException
      * @throws MyIllegalArgumentException
      */
-    public long create(String name, String email, String password) throws MyConstraintViolationException, MyIllegalArgumentException {
+    public long create(String name, String email, String password) throws Exception {
         if(name == null || name.equals("")){
             throw new MyIllegalArgumentException("Name is invalid");
         }
@@ -53,7 +53,7 @@ public class StudentBean {
      * @return the student found
      * @throws MyEntityNotFoundException
      */
-    public Student findStudent(long id) throws MyEntityNotFoundException {
+    public Student findStudent(long id) throws Exception {
         Student student = entityManager.find(Student.class, id);
         if (student == null) throw new MyEntityNotFoundException("There is no Student with the id: " + id);
         return student;
@@ -74,7 +74,7 @@ public class StudentBean {
      * @param email
      * @throws MyEntityNotFoundException
      */
-    public void update(long id, String name, String email) throws MyEntityNotFoundException {
+    public void update(long id, String name, String email) throws Exception {
         Student student = findStudent(id);
         entityManager.lock(student, LockModeType.PESSIMISTIC_READ);
         if(name != null && !name.equals("") && !student.getName().equals(name)){
@@ -91,7 +91,7 @@ public class StudentBean {
      * @return true if deleted, false otherwise
      * @throws MyEntityNotFoundException
      */
-    public boolean delete(long id) throws MyEntityNotFoundException {
+    public boolean delete(long id) throws Exception {
         Student student = findStudent(id);
         entityManager.lock(student, LockModeType.PESSIMISTIC_READ);
         entityManager.remove(student);

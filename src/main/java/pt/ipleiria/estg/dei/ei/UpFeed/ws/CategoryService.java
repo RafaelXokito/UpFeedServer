@@ -31,7 +31,7 @@ public class CategoryService {
 
     @GET
     @Path("/{id}")
-    public Response getCategoryDetails(@PathParam("id") long id) throws MyEntityNotFoundException {
+    public Response getCategoryDetails(@PathParam("id") long id) throws Exception {
         Category category = categoryBean.find(id);
         return Response.status(Response.Status.OK)
                 .entity(toDTO(category))
@@ -40,7 +40,7 @@ public class CategoryService {
 
     @POST
     @Path("/")
-    public Response createCategory(CategoryDTO categoryDTO) throws MyEntityNotFoundException, MyIllegalArgumentException {
+    public Response createCategory(CategoryDTO categoryDTO) throws Exception {
         long id = categoryBean.create(categoryDTO.getEmailOwner(), categoryDTO.getName());
 
         Category category = categoryBean.find(id);
@@ -51,7 +51,7 @@ public class CategoryService {
 
     @PUT
     @Path("/{id}")
-    public Response updateCategory(@PathParam("id") long id, CategoryDTO categoryDTO) throws MyEntityNotFoundException {
+    public Response updateCategory(@PathParam("id") long id, CategoryDTO categoryDTO) throws Exception {
         categoryBean.update(id, categoryDTO.getName());
         Category category = categoryBean.find(id);
         return Response.status(Response.Status.OK)
@@ -61,7 +61,7 @@ public class CategoryService {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteCategory(@PathParam("id") long id) throws MyEntityNotFoundException {
+    public Response deleteCategory(@PathParam("id") long id) throws Exception {
         Category category = categoryBean.find(id);
         if(categoryBean.delete(id)){
             return Response.status(Response.Status.OK)

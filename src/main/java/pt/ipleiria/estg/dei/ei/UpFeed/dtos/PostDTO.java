@@ -83,4 +83,5 @@ public class PostDTO {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

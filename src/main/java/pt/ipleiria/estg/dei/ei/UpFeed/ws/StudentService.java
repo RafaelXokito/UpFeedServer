@@ -32,7 +32,7 @@ public class StudentService {
 
     @GET
     @Path("/{id}")
-    public Response getStudentDetails(@PathParam("id") long id) throws MyEntityNotFoundException {
+    public Response getStudentDetails(@PathParam("id") long id) throws Exception {
         Student student = studentBean.findStudent(id);
         return Response.status(Response.Status.OK)
                 .entity(toDTO(student))
@@ -41,7 +41,7 @@ public class StudentService {
 
     @POST
     @Path("/")
-    public Response createStudent(StudentDTO studentDTO) throws MyEntityNotFoundException, MyIllegalArgumentException, MyConstraintViolationException {
+    public Response createStudent(StudentDTO studentDTO) throws Exception {
         long id = studentBean.create(studentDTO.getName(),studentDTO.getEmail(),studentDTO.getPassword());
 
         Student student = studentBean.findStudent(id);
@@ -52,7 +52,7 @@ public class StudentService {
 
     @PUT
     @Path("/{id}")
-    public Response updateStudent(@PathParam("id") long id, StudentDTO studentDTO) throws MyEntityNotFoundException {
+    public Response updateStudent(@PathParam("id") long id, StudentDTO studentDTO) throws Exception {
         studentBean.update(id,studentDTO.getName(),studentDTO.getEmail());
         Student student = studentBean.findStudent(id);
         return Response.status(Response.Status.OK)
@@ -62,7 +62,7 @@ public class StudentService {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteStudent(@PathParam("id") long id) throws MyEntityNotFoundException {
+    public Response deleteStudent(@PathParam("id") long id) throws Exception {
         Student student = studentBean.findStudent(id);
         if(studentBean.delete(id)){
             return Response.status(Response.Status.OK)

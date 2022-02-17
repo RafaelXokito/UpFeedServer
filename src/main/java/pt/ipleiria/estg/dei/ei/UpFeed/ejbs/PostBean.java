@@ -32,7 +32,7 @@ public class PostBean {
      * @throws MyEntityNotFoundException
      * @throws MyUnauthorizedException
      */
-    public long create(String emailOwner, String title, String description, boolean type, long roomId) throws MyIllegalArgumentException, MyEntityNotFoundException, MyUnauthorizedException {
+    public long create(String emailOwner, String title, String description, boolean type, long roomId) throws Exception {
         if(title == null || title.equals("")){
             throw new MyIllegalArgumentException("Title is empty");
         }
@@ -47,8 +47,8 @@ public class PostBean {
         if(room == null){
             throw new MyEntityNotFoundException("There is no room with the id: " + roomId);
         }
-        //TODO - Should other teachers in the room post on the rooms?
-        if(room.getChannel().getType() == Channel.TeacherChannel && !emailOwner.equals(room.getChannel().getOwner().getEmail())){
+
+        if(room.getChannel().getType() == Channel.TeacherChannel && (!emailOwner.equals(room.getChannel().getOwner().getEmail()) || emailOwner.equals(findSubjectRoom(room.getId()).getTeacher().getEmail()))){
             throw new MyUnauthorizedException("User is not allowed to post in this room");
         }
         if(room.getChannel().getType() == Channel.StudentChannel){
@@ -63,7 +63,6 @@ public class PostBean {
                 throw new MyUnauthorizedException("User does not belong to this room");
             }
         }
-
         Post post = new Post(user, room, title, description, type);
         entityManager.persist(post);
         entityManager.flush();
@@ -80,13 +79,24 @@ public class PostBean {
         query.setLockMode(LockModeType.OPTIMISTIC);
         return query.getResultList().size() > 0 ? query.getSingleResult() : null;
     }
+    /***
+     * Find SubjectRoom by given @Id:id
+     * @param id @Id to find SubjectRoom
+     * @return founded SubjectRoom or Null if dont
+     */
+    public SubjectRoom findSubjectRoom(long id) throws Exception {
+        SubjectRoom subjectRoom = entityManager.find(SubjectRoom.class, id);
+        if (subjectRoom == null)
+            throw new MyEntityNotFoundException("SubjectRoom \"" + id + "\" does not exist");
+        return subjectRoom;
+    }
 
     /**
      * Retrieves the Post with this id
      * @param id
      * @return the post found
      */
-    public Post find(long id) throws MyEntityNotFoundException {
+    public Post find(long id) throws Exception {
         Post post = entityManager.find(Post.class,id);
         if(post == null){
             throw new MyEntityNotFoundException("There is no Post with the id: " +id);
@@ -109,7 +119,7 @@ public class PostBean {
      * @param description
      * @throws MyEntityNotFoundException
      */
-    public void update(long id, String title, String description) throws MyEntityNotFoundException {
+    public void update(long id, String title, String description) throws Exception {
         Post post = find(id);
         entityManager.lock(post, LockModeType.PESSIMISTIC_READ);
         if(title != null && !title.equals("") && !post.getTitle().equals(title)){
@@ -127,7 +137,7 @@ public class PostBean {
      * @return true if deleted, false otherwise
      * @throws MyEntityNotFoundException
      */
-    public boolean delete(long id) throws MyEntityNotFoundException {
+    public boolean delete(long id) throws Exception {
         Post post = find(id);
         entityManager.remove(post);
         post.getOwner().removePost(post);

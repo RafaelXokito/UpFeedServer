@@ -24,7 +24,7 @@ public class CategoryBean {
      * @throws MyIllegalArgumentException
      * @throws MyEntityNotFoundException
      */
-    public long create(String emailOwner, String name) throws MyIllegalArgumentException, MyEntityNotFoundException {
+    public long create(String emailOwner, String name) throws Exception {
         if(emailOwner == null || emailOwner.equals("")){
             throw new MyIllegalArgumentException("Email is invalid");
         }
@@ -58,7 +58,7 @@ public class CategoryBean {
      * @return the category with the id
      * @throws MyEntityNotFoundException
      */
-    public Category find(long id) throws MyEntityNotFoundException {
+    public Category find(long id) throws Exception {
         Category category = entityManager.find(Category.class,id);
         if (category == null) {
              throw new MyEntityNotFoundException("There is no Category with the id: " + id);
@@ -80,7 +80,7 @@ public class CategoryBean {
      * @param name
      * @throws MyEntityNotFoundException
      */
-    public void update(long id, String name) throws MyEntityNotFoundException {
+    public void update(long id, String name) throws Exception {
         Category category = find(id);
         entityManager.lock(category, LockModeType.PESSIMISTIC_READ);
         if(name != null && !name.equals("") && !category.getName().equals(name)){
@@ -94,7 +94,7 @@ public class CategoryBean {
      * @return true if deleted, false otherwise
      * @throws MyEntityNotFoundException
      */
-    public boolean delete(long id) throws MyEntityNotFoundException {
+    public boolean delete(long id) throws Exception {
         Category category = find(id);
         entityManager.lock(category, LockModeType.PESSIMISTIC_READ);
 

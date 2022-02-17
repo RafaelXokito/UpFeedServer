@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 @Provider
 public class CatchAllExceptionMapper implements ExceptionMapper<Exception> {
-    private static final Logger logger = Logger.getLogger("exceptions.MyEntityNotFoundExceptionMapper");
+    private static final Logger logger = Logger.getLogger("exceptions.CatchAllExceptionMapper");
     @Override
     public Response toResponse(Exception e) {
         String errorMsg = e.getMessage();

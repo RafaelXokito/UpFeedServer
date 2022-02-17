@@ -32,7 +32,7 @@ public class NoteBean {
      * @throws MyUnauthorizedException
      * @throws MyIllegalArgumentException
      */
-    public long create(String emailOwner, String title, String description, boolean status, long categoryId) throws MyEntityNotFoundException, MyUnauthorizedException, MyIllegalArgumentException {
+    public long create(String emailOwner, String title, String description, boolean status, long categoryId) throws Exception {
 
         if(emailOwner == null || emailOwner.equals("")){
             throw new MyIllegalArgumentException("Email is empty");
@@ -98,7 +98,7 @@ public class NoteBean {
      * @param description
      * @throws MyEntityNotFoundException
      */
-    public void update(long id, String title,String description) throws MyEntityNotFoundException {
+    public void update(long id, String title,String description) throws Exception {
         Note note = find(id);
         entityManager.lock(note, LockModeType.PESSIMISTIC_READ);
         if(title != null && !title.equals("") && !title.equals(note.getTitle())){
@@ -115,7 +115,7 @@ public class NoteBean {
      * @param status
      * @throws MyEntityNotFoundException
      */
-    public void toogleStatus(long id, boolean status) throws MyEntityNotFoundException {
+    public void toogleStatus(long id, boolean status) throws Exception {
         Note note = find(id);
         if(status != note.getStatus()){
             note.setStatus(status);
@@ -128,7 +128,7 @@ public class NoteBean {
      * @return true if deleted, false otherwisee
      * @throws MyEntityNotFoundException
      */
-    public boolean delete(long id) throws MyEntityNotFoundException {
+    public boolean delete(long id) throws Exception {
         Note note = find(id);
         entityManager.lock(note, LockModeType.PESSIMISTIC_READ);
         note.getOwner().removeNote(note);
