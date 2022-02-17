@@ -207,4 +207,6 @@ public class ChannelBean {
 
         return !channel.getUsers().contains(user);
     }
+
+
 }

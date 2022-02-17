@@ -82,7 +82,7 @@ public class ConfigBean {
             System.out.println("## Update Students ");
             studentBean.update(studentCarla, "Carla Sofia Crespo Mendes", "1111@my.ipleiria.pt");
             studentBean.update(studentCarlos, "Carlos Pereira Martinho da Costa", "");
-            studentBean.delete(studentCarla);
+            //studentBean.delete(studentCarla);
 
             System.out.println("# Categories");
             System.out.println("## Create Categories");
@@ -107,6 +107,7 @@ public class ConfigBean {
             System.out.println("# Channels ");
             System.out.println("## Creating Channel ");
             long channelDAE = channelBean.create(teacherRicardoMartinho,"DAE","DAE", true, 6);
+            long channel3AnoStudent = channelBean.create(studentFabio,"EI - 3º Ano","Este channel deve-se apenas e somente ao estudo do terceiro ano de EI", false, null);
             System.out.println("## Updating Channel ");
             channelBean.update(channelDAE,"DAE","Desenvolvimento de Aplicações Empresariais", 6);
             System.out.println("## Deleting Channel ");
@@ -116,6 +117,14 @@ public class ConfigBean {
             channelBean.addUserToChannel(channelDAE,"1113@my.ipleiria.pt");
             channelBean.addUserToChannel(channelDAE,"1114@my.ipleiria.pt");
             channelBean.addUserToChannel(channelDAE,"1115@my.ipleiria.pt");
+
+            channelBean.addUserToChannel(channel3AnoStudent,"1111@my.ipleiria.pt");
+            channelBean.addUserToChannel(channel3AnoStudent,"1113@my.ipleiria.pt");
+            channelBean.addUserToChannel(channel3AnoStudent,"1114@my.ipleiria.pt");
+            channelBean.addUserToChannel(channel3AnoStudent,"1115@my.ipleiria.pt");
+            channelBean.addUserToChannel(channel3AnoStudent,"1116@my.ipleiria.pt");
+            channelBean.addUserToChannel(channel3AnoStudent,"1117@my.ipleiria.pt");
+
 
             System.out.println("#Rooms");
             System.out.println("## SubjectRooms ");
@@ -146,6 +155,14 @@ public class ConfigBean {
 
             studyRoomBean.removeStudentToStudyRoom(studyRoomDAE,"1115@my.ipleiria.pt");
 
+            long studyRoom3AnoStudent = studyRoomBean.create(channel3AnoStudent, "Le Gang B T Q i +", "Easy 39");
+            studyRoomBean.addStudentToStudyRoom(studyRoom3AnoStudent,"1111@my.ipleiria.pt");
+            studyRoomBean.addStudentToStudyRoom(studyRoom3AnoStudent,"1113@my.ipleiria.pt");
+            studyRoomBean.addStudentToStudyRoom(studyRoom3AnoStudent,"1114@my.ipleiria.pt");
+            studyRoomBean.addStudentToStudyRoom(studyRoom3AnoStudent,"1115@my.ipleiria.pt");
+            studyRoomBean.addStudentToStudyRoom(studyRoom3AnoStudent,"1116@my.ipleiria.pt");
+            studyRoomBean.addStudentToStudyRoom(studyRoom3AnoStudent,"1117@my.ipleiria.pt");
+
             System.out.println("### Updating StudyRoom ");
             studyRoomBean.update(studyRoomDAE,"Estudo", "Secção de estudo da UC de Desenvolvimento de Aplicações Empresariais");
             System.out.println("### Deleting StudyRoom ");
@@ -164,6 +181,21 @@ public class ConfigBean {
                     System.out.println(user.getName());
                 }
             }
+
+            System.out.println("# Reading Users to Channel (3º Ano Students) ");
+            Channel objChannel3AnoStudents = channelBean.findChannel(channel3AnoStudent);
+            System.out.println(objChannel3AnoStudents.getTitle() + " | Owner - " + objChannel3AnoStudents.getOwner().getName());
+            System.out.println("----------------------------");
+            for (User user:objChannel3AnoStudents.getUsers()){
+                System.out.println(user.getName());
+            }
+            for (Room room:objChannel3AnoStudents.getRooms()){
+                System.out.println("----------- "+room.getTitle()+ "|" + room.getClass().getSimpleName() + " -----------");
+                for (User user:room.getStudents()){
+                    System.out.println(user.getName());
+                }
+            }
+
 
         }catch (Exception e){
             logger.log(Level.SEVERE, e.getMessage());

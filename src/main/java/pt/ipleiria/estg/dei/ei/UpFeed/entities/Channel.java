@@ -21,16 +21,13 @@ public class Channel implements Serializable {
     private Long id;
     @NotNull
     private String title;
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "ownerUserId")
     private User owner;
-    @NotNull
     private String description;
     @NotNull
     private Boolean type;
-    @NotNull
-    private int weight;
+    private Integer weight;
 
     @OneToMany(mappedBy = "channel", cascade = CascadeType.REMOVE)
     private List<Room> rooms;
@@ -49,7 +46,7 @@ public class Channel implements Serializable {
         this.users = new ArrayList<>();
     }
 
-    public Channel(String title, User owner, String description, Boolean type, int weight) {
+    public Channel(String title, User owner, String description, Boolean type, Integer weight) {
         this();
         this.title = title;
         this.owner = owner;
@@ -58,7 +55,7 @@ public class Channel implements Serializable {
         this.weight = weight;
     }
 
-    public Channel(Long id, String title, User owner, String description, Boolean type, int weight) {
+    public Channel(Long id, String title, User owner, String description, Boolean type, Integer weight) {
         this(title, owner, description, type, weight);
         this.id = id;
     }
@@ -102,11 +99,11 @@ public class Channel implements Serializable {
         this.type = type;
     }
 
-    public int getWeight() {
+    public Integer getWeight() {
         return this.weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
