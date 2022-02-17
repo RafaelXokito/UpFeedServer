@@ -13,11 +13,15 @@ import java.util.List;
 public abstract class User extends Person implements Serializable{
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Note> notes;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Category> categories;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Post> posts;
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+
+    //Relation of channels that this user are owner dont need to be present
+    @ManyToMany
     private List<Channel> channels;
 
     public User() {
@@ -68,7 +72,7 @@ public abstract class User extends Person implements Serializable{
         categories.add(category);
     }
 
-    public void removeCategory(Note category){
+    public void removeCategory(Category category){
         if(category == null || !categories.contains(category)){
             return;
         }

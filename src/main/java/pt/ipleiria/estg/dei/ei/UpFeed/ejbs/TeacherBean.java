@@ -1,8 +1,7 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.*;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Teacher;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.Teacher;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.Person;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Teacher;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
 
@@ -91,6 +90,8 @@ public class TeacherBean {
         Teacher teacher = findTeacher(id);
 
         entityManager.remove(teacher);
+        //TODO - WHEN SOFTDELETED DONE WE NEED TO SOLVE THE REALTIONS
+
         return entityManager.find(Teacher.class, id) == null;
     }
 

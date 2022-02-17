@@ -7,10 +7,7 @@ import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyIllegalArgumentException;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 @Stateless
@@ -65,7 +62,12 @@ public class CategoryBean {
     public boolean delete(long id) throws MyEntityNotFoundException {
         Category category = find(id);
         entityManager.lock(category, LockModeType.PESSIMISTIC_READ);
-        entityManager.remove(category);//remove the categories from the notes
+
+        category.getOwner().removeCategory(category);
+        entityManager.remove(category);
+
+        entityManager.flush();
+
         return entityManager.find(Category.class,id) == null;
     }
 }

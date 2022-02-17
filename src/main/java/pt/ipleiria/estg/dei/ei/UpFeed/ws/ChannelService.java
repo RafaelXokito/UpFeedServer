@@ -1,10 +1,9 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ws;
 
-import pt.ipleiria.estg.dei.ei.UpFeed.dtos.ChannelDTO;
-import pt.ipleiria.estg.dei.ei.UpFeed.dtos.TeacherDTO;
-import pt.ipleiria.estg.dei.ei.UpFeed.dtos.UserDTO;
+import pt.ipleiria.estg.dei.ei.UpFeed.dtos.*;
 import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.ChannelBean;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Channel;
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.SubjectRoom;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Teacher;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.User;
 
@@ -14,6 +13,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Path("channels") // relative url web path for this service
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 public class ChannelService {
     @EJB
     private ChannelBean channelBean;
+
+    private static final Logger logger = Logger.getLogger("ws.ChannelService");
 
     @GET
     @Path("/")
@@ -55,6 +58,43 @@ public class ChannelService {
         Channel channel = channelBean.findChannel(id);
 
         return Response.status(Response.Status.CREATED)
+                .entity(toDTO(channel))
+                .build();
+    }
+
+    @POST
+    @Path("/{id}/students")
+    public Response associateStudentToChannelWS(@PathParam("id") long id, ChannelDTO channelDTO) throws Exception {
+        for (UserDTO userDTO : channelDTO.getUsers()) {
+            try {
+                channelBean.addUserToChannel(id, userDTO.getEmail());
+            }catch (Exception e){
+                logger.log(Level.SEVERE, e.getMessage());
+            }
+        }
+
+        Channel channel = channelBean.findChannel(id);
+
+        return Response.status(Response.Status.CREATED)
+                .entity(toDTO(channel))
+                .build();
+    }
+
+    @DELETE
+    @Path("/{id}/students")
+    public Response desassociateStudentToChannelRoomWS(@PathParam("id") long id, ChannelDTO channelDTO) throws Exception {
+
+        for (UserDTO userDTO : channelDTO.getUsers()) {
+            try {
+                channelBean.removeUserToChannel(id, userDTO.getEmail());
+            }catch (Exception e){
+                logger.log(Level.SEVERE, e.getMessage());
+            }
+        }
+
+        Channel channel = channelBean.findChannel(id);
+
+        return Response.status(Response.Status.OK)
                 .entity(toDTO(channel))
                 .build();
     }
@@ -101,7 +141,12 @@ public class ChannelService {
                 channel.getTitle(),
                 channel.getDescription(),
                 channel.getType(),
-                channel.getWeight());
+                channel.getWeight(),
+                usersToDTOs(channel.getUsers()));
+    }
+
+    private List<UserDTO> usersToDTOs(List<User> users) {
+        return users.stream().map(this::userToDTO).collect(Collectors.toList());
     }
 
     private UserDTO userToDTO(User user) {
