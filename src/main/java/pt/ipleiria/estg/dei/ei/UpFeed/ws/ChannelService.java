@@ -14,6 +14,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Path("channels") // relative url web path for this service
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 public class ChannelService {
     @EJB
     private ChannelBean channelBean;
+
+    private static final Logger logger = Logger.getLogger("ws.ChannelService");
 
     @GET
     @Path("/")
@@ -51,6 +55,25 @@ public class ChannelService {
                 channelDTO.getDescription(),
                 channelDTO.getType(),
                 channelDTO.getWeight());
+
+        Channel channel = channelBean.findChannel(id);
+
+        return Response.status(Response.Status.CREATED)
+                .entity(toDTO(channel))
+                .build();
+    }
+
+    @POST
+    @Path("/{id}/students")
+    public Response associateStudentToChannelWS(@PathParam("id") long id, ChannelDTO channelDTO) throws Exception {
+        System.out.println(channelDTO.getUsers().size());
+        for (UserDTO userDTO : channelDTO.getUsers()) {
+            try {
+                channelBean.addUserToChannel(id, userDTO.getEmail());
+            }catch (Exception e){
+                logger.log(Level.SEVERE, e.getMessage());
+            }
+        }
 
         Channel channel = channelBean.findChannel(id);
 

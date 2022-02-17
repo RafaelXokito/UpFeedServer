@@ -47,6 +47,17 @@ public class SubjectRoomBean {
         return query.getResultList().size() > 0 ? query.getSingleResult() : null;
     }
 
+    /**
+     * Find student based on given email
+     * @param email email to find student
+     * @return Student object founded or null if dont
+     */
+    public Student findStudent(String email) {
+        TypedQuery<Student> query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = '" + email + "'", Student.class);
+        query.setLockMode(LockModeType.OPTIMISTIC);
+        return query.getResultList().size() > 0 ? query.getSingleResult() : null;
+    }
+
     /***
      * Creating a SubjectRoom
      * @param teacherEmail @Unique:email of subjectRoom owner
@@ -72,17 +83,20 @@ public class SubjectRoomBean {
         if (channel.getType() != Channel.TeacherChannel)
             throw new MyIllegalArgumentException("Invalid \"channel\", must be a teacher channel");
         if (!channel.getUsers().contains(teacher))
-            throw new MyIllegalArgumentException("Invalid \"teacher\", this teacher");
+            throw new MyIllegalArgumentException("Invalid \"teacher\", this teacher dont belong to parent channel");
 
 
         SubjectRoom newSubjectRoom = new SubjectRoom(title.trim(), description, channel, weight, teacher);
         try {
             entityManager.persist(newSubjectRoom);
-            entityManager.flush();
         }catch (Exception ex){
             throw new MyIllegalArgumentException("Error persisting your data");
         }
 
+        channel.addRooms(newSubjectRoom);
+        teacher.addSubjectRoom(newSubjectRoom);
+        entityManager.flush();
+        
         return newSubjectRoom.getId();
     }
 
@@ -174,6 +188,51 @@ public class SubjectRoomBean {
 
         entityManager.flush();
         return entityManager.find(SubjectRoom.class, id) == null;
+    }
+
+
+    /**
+     * Add a Student to a SubjectRoom
+     * @param subjectRoomId to add the student
+     * @param studentEmail to be added to subjectRoom
+     * @return true if student was added successfully to subjectRoom, false if not
+     * @throws Exception
+     */
+    public boolean addStudentToSubjectRoom(long subjectRoomId, String studentEmail) throws Exception{
+        SubjectRoom subjectRoom = findSubjectRoom(subjectRoomId);
+
+        Student student = findStudent(studentEmail);
+        if (student == null)
+            throw new MyEntityNotFoundException("Student with this email \"" + studentEmail + "\" does not exist");
+        if (!subjectRoom.getChannel().getUsers().contains(student))
+            throw new MyIllegalArgumentException("Invalid \"student\", this student dont belongs to the parent channel");
+
+        subjectRoom.addStudents(student);
+        student.addRoom(subjectRoom);
+
+        return subjectRoom.getStudents().contains(student);
+    }
+
+    /**
+     * Remove a Student from a SubjectRoom
+     * @param subjectRoomId to remove the student
+     * @param studentEmail to be removed to subjectRoom
+     * @return true if student was removed successfully to subjectRoom, false if not
+     * @throws Exception
+     */
+    public boolean removeStudentToSubjectRoom(long subjectRoomId, String studentEmail) throws Exception{
+        SubjectRoom subjectRoom = findSubjectRoom(subjectRoomId);
+
+        Student student = findStudent(studentEmail);
+        if (student == null)
+            throw new MyEntityNotFoundException("Student with this email \"" + studentEmail + "\" does not exist");
+        if (!subjectRoom.getChannel().getUsers().contains(student))
+            throw new MyIllegalArgumentException("Invalid \"student\", this student dont belongs to the parent channel");
+
+        subjectRoom.removeStudents(student);
+        student.removeRoom(subjectRoom);
+
+        return !subjectRoom.getStudents().contains(student);
     }
 
 }

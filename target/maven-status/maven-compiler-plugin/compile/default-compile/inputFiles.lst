@@ -12,8 +12,10 @@
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/User.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityExistsExceptionMapper.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/dtos/AdministratorDTO.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ws/SubjectRoomService.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ws/CategoryService.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/UpFeedApplication.java
+/Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/dtos/SubjectRoomDTO.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/ejbs/CategoryBean.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/SubjectRoom.java
 /Users/rafaelpereira/Desktop/UpFeed/UpFeedServer/UpFeedServer/src/main/java/pt/ipleiria/estg/dei/ei/UpFeed/entities/Teacher.java

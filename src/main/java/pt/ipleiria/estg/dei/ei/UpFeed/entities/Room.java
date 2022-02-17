@@ -1,5 +1,7 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.entities;
 
+import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -77,6 +79,20 @@ public abstract class Room implements Serializable {
         this.students = students;
     }
 
+    public void addStudents(Student student){
+        if(student == null || students.contains(student)){
+            return;
+        }
+        students.add(student);
+    }
+
+    public void removeStudents(Student student){
+        if(student == null || !students.contains(student)){
+            return;
+        }
+        students.remove(student);
+    }
+
     public Channel getChannel() {
         return channel;
     }
@@ -84,4 +100,6 @@ public abstract class Room implements Serializable {
     public void setChannel(Channel channel) {
         this.channel = channel;
     }
+    
+    
 }

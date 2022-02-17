@@ -15,6 +15,12 @@ public class StudentDTO {
         this.name = name;
     }
 
+    public StudentDTO(long id, String email, String name) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+    }
+
     public StudentDTO(long id, String name, String email, String password) {
         this.id = id;
         this.email = email;

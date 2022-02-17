@@ -47,6 +47,10 @@ public class ChannelDTO {
         this.users = users;
     }
 
+    public ChannelDTO(List<UserDTO> users) {
+        this.users = users;
+    }
+
     public ChannelDTO() {
         this.users = new ArrayList<>();
     }

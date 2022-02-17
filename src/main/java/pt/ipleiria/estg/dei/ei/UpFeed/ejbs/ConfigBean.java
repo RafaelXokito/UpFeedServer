@@ -115,22 +115,39 @@ public class ConfigBean {
             channelBean.addUserToChannel(channelDAE,"1114@my.ipleiria.pt");
             channelBean.addUserToChannel(channelDAE,"1115@my.ipleiria.pt");
 
-            System.out.println("## Reading Users to Channel (DAE) ");
-            Channel objChannelDAE = channelBean.findChannel(channelDAE);
-            System.out.println(objChannelDAE.getTitle() + " | Owner - " + objChannelDAE.getOwner().getName());
-            System.out.println("----------------------------");
-            for (User user:channelBean.findChannelUsers(channelDAE)){
-                System.out.println(user.getName());
-            }
-
             System.out.println("# SubjectRooms ");
             System.out.println("## Creating SubjectRoom ");
-            long subjectRoomDAE_TP = subjectRoomBean.create("CarlosGrilo@my.ipleiria.pt", channelDAE, "TP - Diurno", "Teórico-Prático Regime Diurno", 35);
-            long subjectRoomDAE_PL2 = subjectRoomBean.create("CarlosGrilo@my.ipleiria.pt", channelDAE, "TP - Diurno", "Teórico-Prático Regime Diurno", 60);
+            long subjectRoomDAE_TP = subjectRoomBean.create("RicardoMartinho@my.ipleiria.pt", channelDAE, "TP - Diurno", "Teórico-Prático Regime Diurno", 35);
+            subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_TP,"1113@my.ipleiria.pt");
+            subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_TP,"1114@my.ipleiria.pt");
+            subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_TP,"1115@my.ipleiria.pt");
+
+            long subjectRoomDAE_PL1 = subjectRoomBean.create("CarlosGrilo@my.ipleiria.pt", channelDAE, "PL1 - Diurno", "Prática-Laboratorial 1 Regime Diurno", 60);
+            subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_PL1,"1113@my.ipleiria.pt");
+
+            long subjectRoomDAE_PL2 = subjectRoomBean.create("RicardoMartinho@my.ipleiria.pt", channelDAE, "PL2 - Diurno", "Prática-Laboratorial 2 Regime Diurno", 60);
+            subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_PL2,"1114@my.ipleiria.pt");
+            subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_PL2,"1115@my.ipleiria.pt");
             System.out.println("## Updating SubjectRoom ");
             subjectRoomBean.update(subjectRoomDAE_TP,"TP - Diurno", "Teórico-Prático Regime Diurno", 40);
             System.out.println("## Deleting SubjectRoom ");
             //subjectRoomBean.delete(subjectRoomDAE_TP);
+
+            System.out.println("## Reading Users to Channel (DAE) ");
+            Channel objChannelDAE = channelBean.findChannel(channelDAE);
+            System.out.println(objChannelDAE.getTitle() + " | Owner - " + objChannelDAE.getOwner().getName());
+            System.out.println("----------------------------");
+            for (User user:objChannelDAE.getUsers()){
+                System.out.println(user.getName());
+            }
+            for (Room room:objChannelDAE.getRooms()){
+                System.out.println("----------- "+room.getTitle()+" -----------");
+                for (User user:room.getStudents()){
+                    System.out.println(user.getName());
+                }
+            }
+
+
 
 
         }catch (Exception e){

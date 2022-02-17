@@ -25,6 +25,10 @@ public class UserDTO {
         this.name = name;
     }
 
+    public UserDTO(String email) {
+        this.email = email;
+    }
+
     public UserDTO() {
     }
 
