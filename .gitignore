@@ -297,9 +297,3 @@ GitHub.sublime-settings
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/java,maven,macos,dotenv,jetbrains+all,visualstudiocode,sublimetext,netbeans,eclipse
-*target*
-
-# eclipse specific git ignore
-bin/**
-tmp/**
-tmp/**/*
