@@ -21,6 +21,10 @@ public class StudentDTO {
         this.name = name;
     }
 
+    public StudentDTO(String email) {
+        this.email = email;
+    }
+
     public StudentDTO(long id, String name, String email, String password) {
         this.id = id;
         this.email = email;

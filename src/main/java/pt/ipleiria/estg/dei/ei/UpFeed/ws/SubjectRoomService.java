@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@Path("subjectRooms") // relative url web path for this service
+@Path("subjectrooms") // relative url web path for this service
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
 public class SubjectRoomService {
@@ -75,7 +75,7 @@ public class SubjectRoomService {
         SubjectRoom subjectRoom = subjectRoomBean.findSubjectRoom(id);
 
         return Response.status(Response.Status.CREATED)
-                .entity(studentsToDTOs(subjectRoom.getStudents()))
+                .entity(toDTO(subjectRoom))
                 .build();
     }
 
@@ -94,7 +94,7 @@ public class SubjectRoomService {
         SubjectRoom subjectRoom = subjectRoomBean.findSubjectRoom(id);
 
         return Response.status(Response.Status.CREATED)
-                .entity(studentsToDTOs(subjectRoom.getStudents()))
+                .entity(toDTO(subjectRoom))
                 .build();
     }
 

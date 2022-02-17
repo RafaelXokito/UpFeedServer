@@ -39,6 +39,10 @@ public class SubjectRoomDTO {
         this.teacher = teacher;
     }
 
+    public SubjectRoomDTO(List<StudentDTO> students) {
+        this.students = students;
+    }
+
     public SubjectRoomDTO() {
     }
 
