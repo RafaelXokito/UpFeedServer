@@ -61,6 +61,7 @@ public class SubjectRoomBean {
     /***
      * Creating a SubjectRoom
      * @param teacherEmail @Unique:email of subjectRoom owner
+     * @param channelId that subjectRoom belongs
      * @param title of subjectRoom
      * @param description of subjectRoom
      * @param weight , if its a Teacher room, they can give a weight (ECT's)
@@ -102,6 +103,7 @@ public class SubjectRoomBean {
 
     /***
      * Updating a SubjectRoom
+     * @param id to find the subjectRoom to be updated
      * @param title of subjectRoom
      * @param description of subjectRoom
      * @param weight , if its a Teacher room, they can give a weight (ECT's)
@@ -184,6 +186,11 @@ public class SubjectRoomBean {
         SubjectRoom subjectRoom = findSubjectRoom(id);
 
         subjectRoom.getTeacher().removeSubjectRoom(subjectRoom);
+        for (Student student :
+                subjectRoom.getStudents()) {
+            student.removeRoom(subjectRoom);
+        }
+        subjectRoom.getChannel().removeRooms(subjectRoom);
         entityManager.remove(subjectRoom);
 
         entityManager.flush();

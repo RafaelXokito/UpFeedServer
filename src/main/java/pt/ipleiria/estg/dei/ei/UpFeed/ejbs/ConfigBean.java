@@ -35,6 +35,8 @@ public class ConfigBean {
     @EJB
     SubjectRoomBean subjectRoomBean;
 
+    @EJB
+    StudyRoomBean studyRoomBean;
     // Pay attention to the correct import: import java.util.logging.Logger;
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 
@@ -115,8 +117,9 @@ public class ConfigBean {
             channelBean.addUserToChannel(channelDAE,"1114@my.ipleiria.pt");
             channelBean.addUserToChannel(channelDAE,"1115@my.ipleiria.pt");
 
-            System.out.println("# SubjectRooms ");
-            System.out.println("## Creating SubjectRoom ");
+            System.out.println("#Rooms");
+            System.out.println("## SubjectRooms ");
+            System.out.println("### Creating SubjectRoom ");
             long subjectRoomDAE_TP = subjectRoomBean.create("RicardoMartinho@my.ipleiria.pt", channelDAE, "TP - Diurno", "Teórico-Prático Regime Diurno", 35);
             subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_TP,"1113@my.ipleiria.pt");
             subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_TP,"1114@my.ipleiria.pt");
@@ -128,12 +131,27 @@ public class ConfigBean {
             long subjectRoomDAE_PL2 = subjectRoomBean.create("RicardoMartinho@my.ipleiria.pt", channelDAE, "PL2 - Diurno", "Prática-Laboratorial 2 Regime Diurno", 60);
             subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_PL2,"1114@my.ipleiria.pt");
             subjectRoomBean.addStudentToSubjectRoom(subjectRoomDAE_PL2,"1115@my.ipleiria.pt");
-            System.out.println("## Updating SubjectRoom ");
+
+            System.out.println("### Updating SubjectRoom ");
             subjectRoomBean.update(subjectRoomDAE_TP,"TP - Diurno", "Teórico-Prático Regime Diurno", 40);
-            System.out.println("## Deleting SubjectRoom ");
+            System.out.println("### Deleting SubjectRoom ");
             //subjectRoomBean.delete(subjectRoomDAE_TP);
 
-            System.out.println("## Reading Users to Channel (DAE) ");
+            System.out.println("## StudyRooms ");
+            System.out.println("### Creating StudyRoom ");
+            long studyRoomDAE = studyRoomBean.create(channelDAE, "Estudo DAE", "Easy 27");
+            studyRoomBean.addStudentToStudyRoom(studyRoomDAE,"1113@my.ipleiria.pt");
+            studyRoomBean.addStudentToStudyRoom(studyRoomDAE,"1114@my.ipleiria.pt");
+            studyRoomBean.addStudentToStudyRoom(studyRoomDAE,"1115@my.ipleiria.pt");
+
+            studyRoomBean.removeStudentToStudyRoom(studyRoomDAE,"1115@my.ipleiria.pt");
+
+            System.out.println("### Updating StudyRoom ");
+            studyRoomBean.update(studyRoomDAE,"Estudo", "Secção de estudo da UC de Desenvolvimento de Aplicações Empresariais");
+            System.out.println("### Deleting StudyRoom ");
+            //studyRoomBean.delete(studyRoomDAE);
+
+            System.out.println("# Reading Users to Channel (DAE) ");
             Channel objChannelDAE = channelBean.findChannel(channelDAE);
             System.out.println(objChannelDAE.getTitle() + " | Owner - " + objChannelDAE.getOwner().getName());
             System.out.println("----------------------------");
@@ -141,14 +159,11 @@ public class ConfigBean {
                 System.out.println(user.getName());
             }
             for (Room room:objChannelDAE.getRooms()){
-                System.out.println("----------- "+room.getTitle()+" -----------");
+                System.out.println("----------- "+room.getTitle()+ "|" + room.getClass().getSimpleName() + " -----------");
                 for (User user:room.getStudents()){
                     System.out.println(user.getName());
                 }
             }
-
-
-
 
         }catch (Exception e){
             logger.log(Level.SEVERE, e.getMessage());

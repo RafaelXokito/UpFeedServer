@@ -15,12 +15,14 @@ pt/ipleiria/estg/dei/ei/UpFeed/entities/Administrator.class
 pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityExistsExceptionMapper.class
 pt/ipleiria/estg/dei/ei/UpFeed/ejbs/SubjectRoomBean.class
 pt/ipleiria/estg/dei/ei/UpFeed/entities/Post.class
+pt/ipleiria/estg/dei/ei/UpFeed/ejbs/StudyRoomBean.class
 pt/ipleiria/estg/dei/ei/UpFeed/entities/Channel.class
 pt/ipleiria/estg/dei/ei/UpFeed/utils/Hour.class
 pt/ipleiria/estg/dei/ei/UpFeed/entities/User.class
 pt/ipleiria/estg/dei/ei/UpFeed/ws/CategoryService.class
 pt/ipleiria/estg/dei/ei/UpFeed/ws/SubjectRoomService.class
 pt/ipleiria/estg/dei/ei/UpFeed/ejbs/StudentBean.class
+pt/ipleiria/estg/dei/ei/UpFeed/ws/StudyRoomService.class
 pt/ipleiria/estg/dei/ei/UpFeed/dtos/SubjectRoomDTO.class
 pt/ipleiria/estg/dei/ei/UpFeed/providers/CorsFilter.class
 pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyUnauthorizedException.class
@@ -34,6 +36,7 @@ pt/ipleiria/estg/dei/ei/UpFeed/ejbs/AdministratorBean.class
 pt/ipleiria/estg/dei/ei/UpFeed/exceptions/MyEntityExistsException.class
 pt/ipleiria/estg/dei/ei/UpFeed/entities/StudyRoom.class
 pt/ipleiria/estg/dei/ei/UpFeed/ejbs/ConfigBean.class
+pt/ipleiria/estg/dei/ei/UpFeed/dtos/StudyRoomDTO.class
 pt/ipleiria/estg/dei/ei/UpFeed/ws/ChannelService.class
 pt/ipleiria/estg/dei/ei/UpFeed/dtos/CategoryDTO.class
 pt/ipleiria/estg/dei/ei/UpFeed/ejbs/TeacherBean.class
