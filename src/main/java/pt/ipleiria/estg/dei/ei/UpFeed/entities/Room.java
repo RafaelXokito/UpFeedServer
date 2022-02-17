@@ -10,7 +10,6 @@ import java.util.List;
 
 @Table(name = "ROOMS")
 @Entity
-//TODO Inheritance
 public abstract class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -103,6 +102,25 @@ public abstract class Room implements Serializable {
     public void setChannel(Channel channel) {
         this.channel = channel;
     }
-    
-    
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+    public void addPost(Post post){
+        if(post == null || posts.contains(post)){
+            return;
+        }
+        posts.add(post);
+    }
+
+    public void removePost(Post post){
+        if(post == null || !posts.contains(post)){
+            return;
+        }
+        posts.remove(post);
+    }
 }

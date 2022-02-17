@@ -2,7 +2,7 @@ package pt.ipleiria.estg.dei.ei.UpFeed.dtos;
 
 public class CategoryDTO {
     private long id;
-    private String emailOwner; //TODO email or id?
+    private String emailOwner;
     private String name;
 
     public CategoryDTO() {

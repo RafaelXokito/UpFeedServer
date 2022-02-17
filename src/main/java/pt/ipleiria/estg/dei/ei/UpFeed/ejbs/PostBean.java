@@ -1,10 +1,9 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.Post;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.Room;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.User;
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.*;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyIllegalArgumentException;
+import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyUnauthorizedException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,8 +19,9 @@ public class PostBean {
     @PersistenceContext
     private EntityManager entityManager;
 
+
     /**
-     *
+     * Creates a new Post
      * @param emailOwner
      * @param title
      * @param description
@@ -30,8 +30,9 @@ public class PostBean {
      * @return the id of the created post
      * @throws MyIllegalArgumentException
      * @throws MyEntityNotFoundException
+     * @throws MyUnauthorizedException
      */
-    public long create(String emailOwner, String title, String description, boolean type, long roomId) throws MyIllegalArgumentException, MyEntityNotFoundException {
+    public long create(String emailOwner, String title, String description, boolean type, long roomId) throws MyIllegalArgumentException, MyEntityNotFoundException, MyUnauthorizedException {
         if(title == null || title.equals("")){
             throw new MyIllegalArgumentException("Title is empty");
         }
@@ -46,7 +47,22 @@ public class PostBean {
         if(room == null){
             throw new MyEntityNotFoundException("There is no room with the id: " + roomId);
         }
-        //TODO - Check the type of channel and then if its a subject room - dont allow students to post on it
+        //TODO - Should other teachers in the room post on the rooms?
+        if(room.getChannel().getType() == Channel.TeacherChannel && !emailOwner.equals(room.getChannel().getOwner().getEmail())){
+            throw new MyUnauthorizedException("User is not allowed to post in this room");
+        }
+        if(room.getChannel().getType() == Channel.StudentChannel){
+            boolean studentBelongsToList = false;
+            List<Student> students = room.getStudents();
+            for (Student student:students) {
+                if(student.getEmail().equals(emailOwner)){
+                    studentBelongsToList = true;
+                }
+            }
+            if(!studentBelongsToList){
+                throw new MyUnauthorizedException("User does not belong to this room");
+            }
+        }
 
         Post post = new Post(user, room, title, description, type);
         entityManager.persist(post);
@@ -115,7 +131,7 @@ public class PostBean {
         Post post = find(id);
         entityManager.remove(post);
         post.getOwner().removePost(post);
-        //TODO when rooms get ready -> post.getRoom().removePost(post);
+        post.getRoom().removePost(post);
         return entityManager.find(Post.class,id) == null;
     }
 }

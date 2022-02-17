@@ -12,7 +12,6 @@ import java.util.List;
         )
 })
 
-//TODO Relations and Inheritance
 @Table(name = "STUDENTS")
 @Entity
 public class Student extends User implements Serializable {
