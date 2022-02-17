@@ -61,7 +61,7 @@ public class PostService {
 
     @DELETE
     @Path("/{id}")
-    public Response deletePost(@PathParam("id") long id, PostDTO postDTO) throws Exception {
+    public Response deletePost(@PathParam("id") long id) throws Exception {
         Post post = postBean.find(id);
         if(postBean.delete(id)){
             return Response.status(Response.Status.OK)
