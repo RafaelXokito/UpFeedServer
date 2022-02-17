@@ -17,6 +17,15 @@ public class StudentBean {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Creates a new Student
+     * @param name
+     * @param email
+     * @param password
+     * @return the id of the created student
+     * @throws MyConstraintViolationException
+     * @throws MyIllegalArgumentException
+     */
     public long create(String name, String email, String password) throws MyConstraintViolationException, MyIllegalArgumentException {
         if(name == null || name.equals("")){
             throw new MyIllegalArgumentException("Name is invalid");
@@ -38,16 +47,33 @@ public class StudentBean {
        return student.getId();
     }
 
+    /**
+     * Finds the student with this id
+     * @param id
+     * @return the student found
+     * @throws MyEntityNotFoundException
+     */
     public Student findStudent(long id) throws MyEntityNotFoundException {
         Student student = entityManager.find(Student.class, id);
         if (student == null) throw new MyEntityNotFoundException("There is no Student with the id: " + id);
         return student;
     }
 
+    /**
+     * Retrieves all the Students from the table
+     * @return the list of students in the students table
+     */
     public List<Student> getAllStudents() {
         return (List<Student>) entityManager.createNamedQuery("getAllStudents").getResultList();
     }
 
+    /**
+     * Updates the student's name and email
+     * @param id
+     * @param name
+     * @param email
+     * @throws MyEntityNotFoundException
+     */
     public void update(long id, String name, String email) throws MyEntityNotFoundException {
         Student student = findStudent(id);
         entityManager.lock(student, LockModeType.PESSIMISTIC_READ);
@@ -59,6 +85,12 @@ public class StudentBean {
         }
     }
 
+    /**
+     * Deletes the student with this id
+     * @param id
+     * @return true if deleted, false otherwise
+     * @throws MyEntityNotFoundException
+     */
     public boolean delete(long id) throws MyEntityNotFoundException {
         Student student = findStudent(id);
         entityManager.lock(student, LockModeType.PESSIMISTIC_READ);

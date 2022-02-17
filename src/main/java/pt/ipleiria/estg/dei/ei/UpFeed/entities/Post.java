@@ -7,6 +7,12 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+@NamedQueries({
+        @NamedQuery(
+            name="getAllPosts",
+            query="SELECT p FROM Post p ORDER BY p.id"
+        )
+})
 @Table(name = "POSTS")
 @Entity
 public class Post implements Serializable {
@@ -21,27 +27,26 @@ public class Post implements Serializable {
     @JoinColumn(name = "roomId")
     private Room room;
     @NotNull
+    private String title;
+    @NotNull
     private String description;
     @NotNull
     private Boolean type;
     @NotNull
     private Date date;
-    @NotNull
-    private Hour hour;
 
     public Post() {
     }
 
-    public Post(User owner, Room room, String description, Boolean type, Date date, Hour hour) {
+    public Post(User owner, Room room, String title, String description, Boolean type) {
         this.owner = owner;
         this.description = description;
         this.type = type;
-        this.date = date;
-        this.hour = hour;
+        this.date = new Date();
     }
 
-    public Post(Long id,  User owner, Room room,  String description, Boolean type, Date date, Hour hour) {
-        this(owner, room, description, type, date, hour);
+    public Post(Long id,  User owner, Room room, String title, String description, Boolean type) {
+        this(owner, room, title, description, type);
         this.id = id;
     }
 
@@ -69,6 +74,14 @@ public class Post implements Serializable {
         this.room = room;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -93,11 +106,4 @@ public class Post implements Serializable {
         this.date = date;
     }
 
-    public Hour getHour() {
-        return hour;
-    }
-
-    public void setHour(Hour hour) {
-        this.hour = hour;
-    }
 }

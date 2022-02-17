@@ -20,6 +20,18 @@ public class NoteBean {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Creates a new Post
+     * @param emailOwner
+     * @param title
+     * @param description
+     * @param status
+     * @param categoryId
+     * @return the created post
+     * @throws MyEntityNotFoundException
+     * @throws MyUnauthorizedException
+     * @throws MyIllegalArgumentException
+     */
     public long create(String emailOwner, String title, String description, boolean status, long categoryId) throws MyEntityNotFoundException, MyUnauthorizedException, MyIllegalArgumentException {
 
         if(emailOwner == null || emailOwner.equals("")){
@@ -45,16 +57,32 @@ public class NoteBean {
         entityManager.flush();
         return note.getId();
     }
+
+    /**
+     * Finds a user based off the email
+     * @param email
+     * @return the user with this email or null if no user is found
+     */
     private User findUser(String email) {
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = '" + email + "'", User.class);
         query.setLockMode(LockModeType.OPTIMISTIC);
         return query.getResultList().size() > 0 ? query.getSingleResult() : null;
     }
 
+    /**
+     * Retrieves all Notes
+     * @return the list of notes in the notes table
+     */
     public List<Note> getAllNotes(){
         return (List<Note>) entityManager.createNamedQuery("getAllNotes").getResultList();
     }
 
+    /**
+     * Retrieves the Note with this id
+     * @param id
+     * @return the Note with this id
+     * @throws MyEntityNotFoundException
+     */
     public Note find(long id) throws MyEntityNotFoundException {
         Note note = entityManager.find(Note.class, id);
         if (note == null){
@@ -63,6 +91,13 @@ public class NoteBean {
     return note;
     }
 
+    /**
+     * Updates the Note's title and description
+     * @param id
+     * @param title
+     * @param description
+     * @throws MyEntityNotFoundException
+     */
     public void update(long id, String title,String description) throws MyEntityNotFoundException {
         Note note = find(id);
         entityManager.lock(note, LockModeType.PESSIMISTIC_READ);
@@ -74,12 +109,25 @@ public class NoteBean {
         }
     }
 
+    /**
+     * Changes the status of the Note (In Progress - False /Done - True)
+     * @param id
+     * @param status
+     * @throws MyEntityNotFoundException
+     */
     public void toogleStatus(long id, boolean status) throws MyEntityNotFoundException {
         Note note = find(id);
         if(status != note.getStatus()){
             note.setStatus(status);
         }
     }
+
+    /**
+     * Deletes the Note with this id
+     * @param id
+     * @return true if deleted, false otherwisee
+     * @throws MyEntityNotFoundException
+     */
     public boolean delete(long id) throws MyEntityNotFoundException {
         Note note = find(id);
         entityManager.lock(note, LockModeType.PESSIMISTIC_READ);
