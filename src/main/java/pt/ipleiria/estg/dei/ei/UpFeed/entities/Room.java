@@ -1,6 +1,9 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.entities;
 
+import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,15 +15,25 @@ public abstract class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
     private String title;
+
     private String description;
+
     @ManyToMany(mappedBy = "rooms")
     private List<Student> students;
+
     @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
     private List<Post> posts;
+
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "channelId")
     private Channel channel;
+
+    @Version
+    private int version;
 
     public Room() {
     }
@@ -69,6 +82,20 @@ public abstract class Room implements Serializable {
         this.students = students;
     }
 
+    public void addStudents(Student student){
+        if(student == null || students.contains(student)){
+            return;
+        }
+        students.add(student);
+    }
+
+    public void removeStudents(Student student){
+        if(student == null || !students.contains(student)){
+            return;
+        }
+        students.remove(student);
+    }
+
     public Channel getChannel() {
         return channel;
     }
@@ -76,4 +103,6 @@ public abstract class Room implements Serializable {
     public void setChannel(Channel channel) {
         this.channel = channel;
     }
+    
+    
 }
