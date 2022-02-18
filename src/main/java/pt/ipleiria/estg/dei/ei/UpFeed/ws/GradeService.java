@@ -49,7 +49,7 @@ public class GradeService {
     @PUT
     @Path("/{id}")
     public Response updateGrade(@PathParam("id") long id, GradeDTO gradeDTO) throws Exception {
-        gradeBean.update(gradeDTO.getId(), gradeDTO.getValue(), gradeDTO.getObservations());
+        gradeBean.update(id, gradeDTO.getValue(), gradeDTO.getObservations());
         Grade grade = gradeBean.find(id);
         return Response.status(Response.Status.OK)
                 .entity(toDTO(grade))
