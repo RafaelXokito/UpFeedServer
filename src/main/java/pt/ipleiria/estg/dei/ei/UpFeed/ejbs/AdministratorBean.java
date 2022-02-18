@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Administrator;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Person;
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.User;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyIllegalArgumentException;
 
@@ -58,6 +59,9 @@ public class AdministratorBean {
         //REQUIRED VALIDATION
         if (email == null || email.trim().isEmpty())
             throw new MyIllegalArgumentException("Field \"email\" is required");
+        if(!isEmailUnique(email)){
+            throw new IllegalArgumentException("Email is already being used");
+        }
         if (password == null || password.trim().isEmpty())
             throw new MyIllegalArgumentException("Field \"password\" is required");
         if (name == null || name.trim().isEmpty())
@@ -83,6 +87,16 @@ public class AdministratorBean {
         return newAdministrator.getId();
     }
 
+    /**
+     * Verifies if there is any User with this email
+     * @param email
+     * @return true if the email is not registered yet or false otherwise
+     */
+    public boolean isEmailUnique(String email){
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = '" + email + "'", User.class);
+        query.setLockMode(LockModeType.OPTIMISTIC);
+        return query.getResultList().size() == 0;
+    }
 
     /***
      * Delete a Administrator by given @Id:id
@@ -106,6 +120,9 @@ public class AdministratorBean {
         //REQUIRED VALIDATION
         if (email == null || email.trim().isEmpty())
             throw new MyIllegalArgumentException("Field \"email\" is required");
+        if(!isEmailUnique(email)){
+            throw new IllegalArgumentException("Email is already being used");
+        }
         if (name == null || name.trim().isEmpty())
             throw new MyIllegalArgumentException("Field \"name\" is required");
 

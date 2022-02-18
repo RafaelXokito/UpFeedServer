@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Student;
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.User;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyIllegalArgumentException;
@@ -9,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
@@ -32,6 +34,9 @@ public class StudentBean {
         }
         if(email == null || email.equals("")){
             throw new IllegalArgumentException("Email is invalid");
+        }
+        if(!isEmailUnique(email)){
+            throw new IllegalArgumentException("Email is already being used");
         }
         if(password == null || password.equals("")){
             throw new IllegalArgumentException("Password is invalid");
@@ -59,6 +64,17 @@ public class StudentBean {
         return student;
     }
 
+   /**
+     * Verifies if there is any User with this email
+     * @param email
+     * @return true if the email is not registered yet or false otherwise
+     */
+    public boolean isEmailUnique(String email){
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = '" + email + "'", User.class);
+        query.setLockMode(LockModeType.OPTIMISTIC);
+        return query.getResultList().size() == 0;
+    }
+
     /**
      * Retrieves all the Students from the table
      * @return the list of students in the students table
@@ -79,6 +95,9 @@ public class StudentBean {
         entityManager.lock(student, LockModeType.PESSIMISTIC_READ);
         if(name != null && !name.equals("") && !student.getName().equals(name)){
             student.setName(name);
+        }
+        if(!isEmailUnique(email)){
+            throw new IllegalArgumentException("Email is already being used");
         }
         if(email != null && !email.equals("") && !student.getEmail().equals(email)){
             student.setEmail(email);
