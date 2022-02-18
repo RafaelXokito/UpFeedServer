@@ -44,6 +44,9 @@ public class ConfigBean {
     @EJB
     PostBean postBean;
 
+    @EJB
+    GradeBean gradeBean;
+
     // Pay attention to the correct import: import java.util.logging.Logger;
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 
@@ -236,6 +239,24 @@ public class ConfigBean {
             postBean.update(postRafael, "Escolhas multiplas do 2 Teste Teorico de DAE", "dps digam qual opcao meteram na 12 e na 3");
             System.out.println("## Delete post");
             postBean.delete(postFabio);
+
+
+            System.out.println("## Grades");
+            long gradeRafael = gradeBean.create(17, "1113@my.ipleiria.pt", subjectRoomDAE_TP,"1 Written Exam");
+            long gradeBruna = gradeBean.create(18, "1114@my.ipleiria.pt", subjectRoomDAE_TP,"1 Written Exam");
+            long gradeCarlos = gradeBean.create(16, "1115@my.ipleiria.pt", subjectRoomDAE_TP,"1 Written Exam");
+            System.out.println("## Read Grades");
+            Grade grade = gradeBean.find(gradeBruna);
+            System.out.println("Find - "+ gradeBruna + " | " + grade.getStudent().getName());
+
+            List<Grade> grades = gradeBean.getAllGrades();
+            for (Grade g:grades){
+                System.out.println(g.getValue() + " | " + g.getStudent().getName());
+            }
+            System.out.println("## Update grade");
+            gradeBean.update(gradeRafael,(float) 18, "");
+            System.out.println("## Delete grade");
+            gradeBean.delete(gradeCarlos);
 
         }catch (Exception e){
             logger.log(Level.SEVERE, e.getMessage());

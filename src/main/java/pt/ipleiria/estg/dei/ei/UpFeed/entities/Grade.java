@@ -4,6 +4,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllGrades",
+                query = "SELECT g FROM Grade g ORDER BY g.id"
+        )
+})
+
 @Table(name = "GRADES")
 @Entity
 public class Grade implements Serializable {
@@ -16,23 +23,35 @@ public class Grade implements Serializable {
     @ManyToOne
     @JoinColumn(name = "studentId")
     private Student student;
-    //private SubjectRoom subjectRoom;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "subjectRoomId")
+    private SubjectRoom subjectRoom;
     @NotNull
     private String observations;
 
     public Grade() {
     }
-    public Grade(Float value, Student student, String observations) {
+    public Grade(Float value, Student student, SubjectRoom subjectRoom, String observations) {
         this.value = value;
         this.student = student;
+        this.subjectRoom = subjectRoom;
         this.observations = observations;
     }
 
-    public Grade(Long id, Float value, Student student, String observations) {
-        this(value, student, observations);
+    public Grade(Long id, Float value, Student student, SubjectRoom subjectRoom,String observations) {
+        this(value, student, subjectRoom,observations);
         this.id = id;
     }
 
+    public SubjectRoom getSubjectRoom() {
+        return subjectRoom;
+    }
+
+    public void setSubjectRoom(SubjectRoom subjectRoom) {
+        this.subjectRoom = subjectRoom;
+    }
 
     public Long getId() {
         return this.id;
