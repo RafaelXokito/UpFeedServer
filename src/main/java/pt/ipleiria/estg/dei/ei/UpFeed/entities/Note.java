@@ -8,6 +8,10 @@ import java.io.Serializable;
         @NamedQuery(
                 name = "getAllNotes",
                 query = "SELECT n FROM Note n ORDER BY n.id"
+        ),
+        @NamedQuery(
+                name = "getAllNotesByUser",
+                query = "SELECT n FROM Note n WHERE n.owner.id = :id ORDER BY n.id"
         )
 })
 @Table(name = "NOTES")

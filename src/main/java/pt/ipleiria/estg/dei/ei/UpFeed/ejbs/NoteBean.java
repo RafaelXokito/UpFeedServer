@@ -78,6 +78,14 @@ public class NoteBean {
     }
 
     /**
+     * Retrieves all Notes
+     * @return the list of notes in the notes table
+     */
+    public List<Note> getAllNotesByUser(Long id){
+        return (List<Note>) entityManager.createNamedQuery("getAllNotesByUser").setParameter("id", id).getResultList();
+    }
+
+    /**
      * Retrieves the Note with this id
      * @param id
      * @return the Note with this id
