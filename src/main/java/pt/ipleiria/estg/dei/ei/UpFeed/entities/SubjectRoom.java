@@ -8,6 +8,10 @@ import java.util.List;
         @NamedQuery(
                 name = "getAllSubjectRooms",
                 query = "SELECT room FROM SubjectRoom room ORDER BY room.title"
+        ),
+        @NamedQuery(
+                name = "getAllSubjectRoomsByUser",
+                query = "SELECT r FROM SubjectRoom r JOIN r.students s WHERE s.id = :id OR r.teacher.id = :id OR r.channel.owner.id = :id ORDER BY r.title"
         )
 })
 @Table(name = "SUBJECTROOMS")

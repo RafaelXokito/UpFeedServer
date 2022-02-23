@@ -2,14 +2,18 @@ package pt.ipleiria.estg.dei.ei.UpFeed.ws;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.dtos.*;
 import pt.ipleiria.estg.dei.ei.UpFeed.dtos.StudentDTO;
+import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.ChannelBean;
+import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.PersonBean;
 import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.SubjectRoomBean;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,52 +22,93 @@ import java.util.stream.Collectors;
 @Path("subjectrooms") // relative url web path for this service
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
+@RolesAllowed({"Student","Teacher"})
 public class SubjectRoomService {
     @EJB
     private SubjectRoomBean subjectRoomBean;
+
+    @EJB
+    private ChannelBean channelBean;
+
+    @EJB
+    private PersonBean personBean;
+
+    @Context
+    private SecurityContext securityContext;
 
     private static final Logger logger = Logger.getLogger("ws.SubjectRoomService");
 
     @GET
     @Path("/")
-    public Response getAllSubjectRoomsWS() {
+    public Response getAllSubjectRoomsWS(@HeaderParam("Authorization") String auth) throws Exception{
+        Person person = personBean.getPersonByAuthToken(auth);
+
         return Response.status(Response.Status.OK)
-                .entity(toDTOs(subjectRoomBean.getAllSubjectRooms()))
+                .entity(toDTOs(subjectRoomBean.getAllSubjectRoomsByUser(person.getId())))
                 .build();
     }
 
     @GET
     @Path("{id}")
-    @RolesAllowed({"SubjectRoom"})
-    public Response getSubjectRoomWS(@PathParam("id") long id) throws Exception {
+    public Response getSubjectRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+        
         SubjectRoom subjectRoom = subjectRoomBean.findSubjectRoom(id);
-
-        return Response.status(Response.Status.OK)
-                .entity(toDTO(subjectRoom))
+        for (Student index :subjectRoom.getStudents()) {
+            if (person.getId().equals(index.getId()))
+                return Response.status(Response.Status.OK)
+                        .entity(toDTO(subjectRoom))
+                        .build();
+        }
+        if (subjectRoom.getTeacher().getId().equals(person.getId()))
+            return Response.status(Response.Status.OK)
+                    .entity(toDTO(subjectRoom))
+                    .build();
+        if (subjectRoom.getChannel().getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.OK)
+                    .entity(toDTO(subjectRoom))
+                    .build();
+        return Response.status(Response.Status.UNAUTHORIZED)
+                .entity("This Subject Room dont belong to you")
                 .build();
     }
 
     @POST
     @Path("/")
-    public Response createSubjectRoomWS(SubjectRoomDTO subjectRoomDTO) throws Exception {
-        long id = subjectRoomBean.create(
-                subjectRoomDTO.getTeacher().getEmail(),
-                subjectRoomDTO.getChannel().getId(),
-                subjectRoomDTO.getTitle(),
-                subjectRoomDTO.getDescription(),
-                subjectRoomDTO.getWeight());
+    public Response createSubjectRoomWS(@HeaderParam("Authorization") String auth, SubjectRoomDTO subjectRoomDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
 
-        SubjectRoom subjectRoom = subjectRoomBean.findSubjectRoom(id);
+        Channel channel = channelBean.findChannel(subjectRoomDTO.getChannel().getId());
+        if (channel.getOwner().getId().equals(person.getId())) {
+            long id = subjectRoomBean.create(
+                    subjectRoomDTO.getTeacher().getEmail(),
+                    subjectRoomDTO.getChannel().getId(),
+                    subjectRoomDTO.getTitle(),
+                    subjectRoomDTO.getDescription(),
+                    subjectRoomDTO.getWeight());
 
-        return Response.status(Response.Status.CREATED)
-                .entity(toDTO(subjectRoom))
+            SubjectRoom subjectRoom = subjectRoomBean.findSubjectRoom(id);
+
+            return Response.status(Response.Status.CREATED)
+                    .entity(toDTO(subjectRoom))
+                    .build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED)
+                .entity("This Subject Room dont belong to you")
                 .build();
     }
 
     @POST
     @Path("/{id}/students")
-    public Response associateStudentToSubjectRoomWS(@PathParam("id") long id, SubjectRoomDTO subjectRoomDTO) throws Exception {
+    public Response associateStudentToSubjectRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id, SubjectRoomDTO subjectRoomDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
 
+        SubjectRoom checkStudyRoom = subjectRoomBean.findSubjectRoom(id);
+        if (!checkStudyRoom.getChannel().getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This Subject Room dont belong to you")
+                    .build();
+        
         for (StudentDTO studentDTO : subjectRoomDTO.getStudents()) {
             try {
                 subjectRoomBean.addStudentToSubjectRoom(id, studentDTO.getEmail());
@@ -81,8 +126,15 @@ public class SubjectRoomService {
 
     @DELETE
     @Path("/{id}/students")
-    public Response desassociateStudentToSubjectRoomWS(@PathParam("id") long id, SubjectRoomDTO subjectRoomDTO) throws Exception {
+    public Response desassociateStudentToSubjectRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id, SubjectRoomDTO subjectRoomDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
 
+        SubjectRoom checkStudyRoom = subjectRoomBean.findSubjectRoom(id);
+        if (!checkStudyRoom.getChannel().getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This Subject Room dont belong to you")
+                    .build();
+        
         for (StudentDTO studentDTO : subjectRoomDTO.getStudents()) {
             try {
                 subjectRoomBean.removeStudentToSubjectRoom(id, studentDTO.getEmail());
@@ -100,8 +152,15 @@ public class SubjectRoomService {
 
     @PUT
     @Path("{id}")
-    @RolesAllowed({"SubjectRoom"})
-    public Response updateSubjectRoomWS(@PathParam("id") long id,SubjectRoomDTO subjectRoomDTO) throws Exception {
+    public Response updateSubjectRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id,SubjectRoomDTO subjectRoomDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        SubjectRoom checkStudyRoom = subjectRoomBean.findSubjectRoom(id);
+        if (!checkStudyRoom.getChannel().getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This Subject Room dont belong to you")
+                    .build();
+        
         subjectRoomBean.update(
                 id,
                 subjectRoomDTO.getTitle(),
@@ -118,7 +177,15 @@ public class SubjectRoomService {
     @DELETE
     @Path("{id}")
     @RolesAllowed({"SubjectRoom"})
-    public Response deleteSubjectRoomWS(@PathParam("id") long id) throws Exception {
+    public Response deleteSubjectRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        SubjectRoom checkStudyRoom = subjectRoomBean.findSubjectRoom(id);
+        if (!checkStudyRoom.getChannel().getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This Subject Room dont belong to you")
+                    .build();
+        
         if (subjectRoomBean.delete(id))
             return Response.status(Response.Status.OK)
                     .entity("SubjectRoom "+id+" deleted!")

@@ -36,6 +36,14 @@ public class SubjectRoomBean {
         return entityManager.createNamedQuery("getAllSubjectRooms", SubjectRoom.class).setLockMode(LockModeType.OPTIMISTIC).getResultList();
     }
 
+    /***
+     * Execute SubjectRoom query getAllSubjectRoomsByStudent getting all SubjectRooms Class
+     * @return a list of All SubjectRooms
+     */
+    public List<SubjectRoom> getAllSubjectRoomsByUser(Long id) {
+        return entityManager.createNamedQuery("getAllSubjectRoomsByUser", SubjectRoom.class).setLockMode(LockModeType.OPTIMISTIC).getResultList();
+    }
+
     /**
      * Find teacher based on given email
      * @param email email to find teacher
