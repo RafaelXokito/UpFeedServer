@@ -1,16 +1,21 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ws;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.dtos.StudentDTO;
+import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.PersonBean;
 import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.StudentBean;
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.Person;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Student;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.UpFeed.exceptions.MyIllegalArgumentException;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +26,15 @@ public class StudentService {
     @EJB
     private StudentBean studentBean;
 
+    @EJB
+    private PersonBean personBean;
+
+    @Context
+    private SecurityContext securityContext;
+
     @GET
     @Path("/")
+    @RolesAllowed({"Administrator"})
     public Response getAllStudentsWS(){
         return Response.status(Response.Status.OK)
                 .entity(toDTOs(studentBean.getAllStudents()))
@@ -32,10 +44,19 @@ public class StudentService {
 
     @GET
     @Path("/{id}")
-    public Response getStudentDetails(@PathParam("id") long id) throws Exception {
+    @RolesAllowed({"Administrator"})
+    public Response getStudentDetails(@HeaderParam("Authorization") String auth, @PathParam("id") long id) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
         Student student = studentBean.findStudent(id);
-        return Response.status(Response.Status.OK)
-                .entity(toDTO(student))
+        if (securityContext.isUserInRole("Administrator") ||
+                student.getId().equals(person.getId()))
+            return Response.status(Response.Status.OK)
+                    .entity(toDTO(studentBean.findStudent(id)))
+                    .build();
+
+        return Response.status(Response.Status.UNAUTHORIZED)
+                .entity("You are not allowed to see this student details")
                 .build();
     }
 
@@ -52,6 +73,7 @@ public class StudentService {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({"Administrator"})
     public Response updateStudent(@PathParam("id") long id, StudentDTO studentDTO) throws Exception {
         studentBean.update(id,studentDTO.getName(),studentDTO.getEmail());
         Student student = studentBean.findStudent(id);
@@ -62,6 +84,7 @@ public class StudentService {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"Administrator"})
     public Response deleteStudent(@PathParam("id") long id) throws Exception {
         Student student = studentBean.findStudent(id);
         if(studentBean.delete(id)){

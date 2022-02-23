@@ -42,6 +42,7 @@ public class AdministratorService {
 
     @POST
     @Path("/")
+    @RolesAllowed({"Administrator"})
     public Response createAdministratorWS(AdministratorDTO administratorDTO) throws Exception {
         long id = administratorBean.create(
                 administratorDTO.getEmail(),

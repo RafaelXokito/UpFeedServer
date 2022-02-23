@@ -2,14 +2,17 @@ package pt.ipleiria.estg.dei.ei.UpFeed.ws;
 
 
 import pt.ipleiria.estg.dei.ei.UpFeed.dtos.TeacherDTO;
+import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.PersonBean;
 import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.TeacherBean;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Teacher;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +24,15 @@ public class TeacherService {
     @EJB
     private TeacherBean teacherBean;
 
+    @EJB
+    private PersonBean personBean;
+
+    @Context
+    private SecurityContext securityContext;
+
     @GET
     @Path("/")
+    @RolesAllowed({"Administrator"})
     public Response getAllTeachersWS() {
         return Response.status(Response.Status.OK)
                 .entity(toDTOs(teacherBean.getAllTeachers()))
@@ -31,7 +41,7 @@ public class TeacherService {
 
     @GET
     @Path("{id}")
-    @RolesAllowed({"Teacher"})
+    @RolesAllowed({"Administrator"})
     public Response getTeacherWS(@PathParam("id") long id) throws Exception {
         Teacher teacher = teacherBean.findTeacher(id);
 
@@ -57,7 +67,7 @@ public class TeacherService {
 
     @PUT
     @Path("{id}")
-    @RolesAllowed({"Teacher"})
+    @RolesAllowed({"Administrator"})
     public Response updateTeacherWS(@PathParam("id") long id,TeacherDTO teacherDTO) throws Exception {
         teacherBean.update(
                 id,
@@ -73,7 +83,7 @@ public class TeacherService {
 
     @DELETE
     @Path("{id}")
-    @RolesAllowed({"Teacher"})
+    @RolesAllowed({"Administrator"})
     public Response deleteTeacherWS(@PathParam("id") long id) throws Exception {
         if (teacherBean.delete(id))
             return Response.status(Response.Status.OK)

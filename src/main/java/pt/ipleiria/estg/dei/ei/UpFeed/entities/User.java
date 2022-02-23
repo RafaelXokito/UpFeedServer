@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-
 @Table(name = "USERS")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
