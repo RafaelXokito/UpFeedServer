@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ejbs;
 
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.Channel;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Grade;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.Student;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.SubjectRoom;
@@ -18,6 +19,24 @@ import java.util.List;
 public class GradeBean {
     @PersistenceContext
     private EntityManager entityManager;
+
+    /***
+     * Execute Grade query getAllGradesClassByTeacher getting all Grade Class by Teacher id
+     * @param id Teacher id
+     * @return a list of All Grades
+     */
+    public List<Grade> getAllGradesClassByTeacher(Long id) {
+        return entityManager.createNamedQuery("getAllGradesClassByTeacher", Grade.class).setParameter("id", id).setLockMode(LockModeType.OPTIMISTIC).getResultList();
+    }
+
+    /***
+     * Execute Grade query getAllGradesClassByStudent getting all Grade Class by Student id
+     * @param id Student id
+     * @return a list of All Grades
+     */
+    public List<Grade> getAllGradesClassByStudent(Long id) {
+        return entityManager.createNamedQuery("getAllGradesClassByStudent", Grade.class).setParameter("id", id).setLockMode(LockModeType.OPTIMISTIC).getResultList();
+    }
 
     /**
      * Creates a new Grade
@@ -72,6 +91,18 @@ public class GradeBean {
             throw new MyEntityNotFoundException("There is no grade with the id: " +id);
         }
         return grade;
+    }
+
+    /***
+     * Find SubjectRoom by given @Id:id
+     * @param id @Id to find SubjectRoom
+     * @return founded SubjectRoom or Null if dont
+     */
+    public SubjectRoom findSubjectRoom(long id) throws Exception {
+        SubjectRoom subjectRoom = entityManager.find(SubjectRoom.class, id);
+        if (subjectRoom == null)
+            throw new MyEntityNotFoundException("SubjectRoom \"" + id + "\" does not exist");
+        return subjectRoom;
     }
 
     public List<Grade> getAllGrades(){
