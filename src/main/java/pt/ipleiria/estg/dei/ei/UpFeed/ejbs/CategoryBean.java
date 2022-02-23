@@ -75,6 +75,14 @@ public class CategoryBean {
     }
 
     /**
+     * Retrieves all Categories by User id
+     * @return the list of the categories in the categories table
+     */
+    public List<Category> getAllCategoriesByUser(Long id){
+        return (List<Category>) entityManager.createNamedQuery("getAllCategoriesByUser").setParameter("id", id).getResultList();
+    }
+
+    /**
      * Updates the Category's name
      * @param id
      * @param name

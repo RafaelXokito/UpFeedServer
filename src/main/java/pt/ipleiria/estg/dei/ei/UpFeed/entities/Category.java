@@ -10,6 +10,10 @@ import java.util.List;
         @NamedQuery(
                 name = "getAllCategories",
                 query = "SELECT c FROM Category c ORDER BY c.id"
+        ),
+        @NamedQuery(
+                name = "getAllCategoriesByUser",
+                query = "SELECT c FROM Category c WHERE c.owner.id = :id ORDER BY c.id"
         )
 })
 
