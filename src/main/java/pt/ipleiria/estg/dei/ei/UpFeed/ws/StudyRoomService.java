@@ -1,14 +1,18 @@
 package pt.ipleiria.estg.dei.ei.UpFeed.ws;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.dtos.*;
+import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.ChannelBean;
+import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.PersonBean;
 import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.StudyRoomBean;
 import pt.ipleiria.estg.dei.ei.UpFeed.entities.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,49 +21,82 @@ import java.util.stream.Collectors;
 @Path("studyrooms") // relative url web path for this service
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
+@RolesAllowed({"Student"})
 public class StudyRoomService {
     @EJB
     private StudyRoomBean studyRoomBean;
+
+    @EJB
+    private ChannelBean channelBean;
+
+    @EJB
+    private PersonBean personBean;
+
+    @Context
+    private SecurityContext securityContext;
 
     private static final Logger logger = Logger.getLogger("ws.StudyRoomService");
 
     @GET
     @Path("/")
-    public Response getAllStudyRoomsWS() {
+    public Response getAllStudyRoomsWS(@HeaderParam("Authorization") String auth) throws Exception{
+        Person person = personBean.getPersonByAuthToken(auth);
+
         return Response.status(Response.Status.OK)
-                .entity(toDTOs(studyRoomBean.getAllStudyRooms()))
+                .entity(toDTOs(studyRoomBean.getAllStudyRoomsByStudent(person.getId())))
                 .build();
     }
 
     @GET
     @Path("{id}")
-    @RolesAllowed({"StudyRoom"})
-    public Response getStudyRoomWS(@PathParam("id") long id) throws Exception {
-        StudyRoom studyRoom = studyRoomBean.findStudyRoom(id);
+    public Response getStudyRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
 
-        return Response.status(Response.Status.OK)
-                .entity(toDTO(studyRoom))
+        StudyRoom studyRoom = studyRoomBean.findStudyRoom(id);
+        for (Student index :studyRoom.getStudents()) {
+            if (person.getId().equals(index.getId()))
+                return Response.status(Response.Status.OK)
+                        .entity(toDTO(studyRoom))
+                        .build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED)
+                .entity("This Study Room dont belong to you")
                 .build();
     }
 
     @POST
     @Path("/")
-    public Response createStudyRoomWS(StudyRoomDTO studyRoomDTO) throws Exception {
-        long id = studyRoomBean.create(
-                studyRoomDTO.getChannel().getId(),
-                studyRoomDTO.getTitle(),
-                studyRoomDTO.getDescription());
+    public Response createStudyRoomWS(@HeaderParam("Authorization") String auth, StudyRoomDTO studyRoomDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
 
-        StudyRoom studyRoom = studyRoomBean.findStudyRoom(id);
+        Channel channel = channelBean.findChannel(studyRoomDTO.getChannel().getId());
+        if (channel.getOwner().getId().equals(person.getId())) {
+            long id = studyRoomBean.create(
+                    studyRoomDTO.getChannel().getId(),
+                    studyRoomDTO.getTitle(),
+                    studyRoomDTO.getDescription());
 
-        return Response.status(Response.Status.CREATED)
-                .entity(toDTO(studyRoom))
+            StudyRoom studyRoom = studyRoomBean.findStudyRoom(id);
+
+            return Response.status(Response.Status.CREATED)
+                    .entity(toDTO(studyRoom))
+                    .build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED)
+                .entity("This Study Room dont belong to you")
                 .build();
     }
 
     @POST
     @Path("/{id}/students")
-    public Response associateStudentToStudyRoomWS(@PathParam("id") long id, StudyRoomDTO studyRoomDTO) throws Exception {
+    public Response associateStudentToStudyRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id, StudyRoomDTO studyRoomDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        StudyRoom checkStudyRoom = studyRoomBean.findStudyRoom(id);
+        if (!checkStudyRoom.getChannel().getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This Study Room dont belong to you")
+                    .build();
 
         for (StudentDTO studentDTO : studyRoomDTO.getStudents()) {
             try {
@@ -78,7 +115,14 @@ public class StudyRoomService {
 
     @DELETE
     @Path("/{id}/students")
-    public Response desassociateStudentToStudyRoomWS(@PathParam("id") long id, StudyRoomDTO studyRoomDTO) throws Exception {
+    public Response desassociateStudentToStudyRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id, StudyRoomDTO studyRoomDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        StudyRoom checkStudyRoom = studyRoomBean.findStudyRoom(id);
+        if (!checkStudyRoom.getChannel().getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This Study Room dont belong to you")
+                    .build();
 
         for (StudentDTO studentDTO : studyRoomDTO.getStudents()) {
             try {
@@ -97,8 +141,15 @@ public class StudyRoomService {
 
     @PUT
     @Path("{id}")
-    @RolesAllowed({"StudyRoom"})
-    public Response updateStudyRoomWS(@PathParam("id") long id,StudyRoomDTO studyRoomDTO) throws Exception {
+    public Response updateStudyRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id,StudyRoomDTO studyRoomDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        StudyRoom checkStudyRoom = studyRoomBean.findStudyRoom(id);
+        if (!checkStudyRoom.getChannel().getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This Study Room dont belong to you")
+                    .build();
+
         studyRoomBean.update(
                 id,
                 studyRoomDTO.getTitle(),
@@ -114,7 +165,15 @@ public class StudyRoomService {
     @DELETE
     @Path("{id}")
     @RolesAllowed({"StudyRoom"})
-    public Response deleteStudyRoomWS(@PathParam("id") long id) throws Exception {
+    public Response deleteStudyRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        StudyRoom checkStudyRoom = studyRoomBean.findStudyRoom(id);
+        if (!checkStudyRoom.getChannel().getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This Study Room dont belong to you")
+                    .build();
+
         if (studyRoomBean.delete(id))
             return Response.status(Response.Status.OK)
                     .entity("StudyRoom "+id+" deleted!")

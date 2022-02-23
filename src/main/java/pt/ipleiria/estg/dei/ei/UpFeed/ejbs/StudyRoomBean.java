@@ -39,6 +39,14 @@ public class StudyRoomBean {
         return entityManager.createNamedQuery("getAllStudyRooms", StudyRoom.class).setLockMode(LockModeType.OPTIMISTIC).getResultList();
     }
 
+    /***
+     * Execute StudyRoom query getAllStudyRoomsByStudent getting all StudyRooms Class
+     * @return a list of All StudyRooms
+     */
+    public List<StudyRoom> getAllStudyRoomsByStudent(Long id) {
+        return entityManager.createNamedQuery("getAllStudyRoomsByStudent", StudyRoom.class).setLockMode(LockModeType.OPTIMISTIC).getResultList();
+    }
+
     /**
      * Find student based on given email
      * @param email email to find student
@@ -79,6 +87,11 @@ public class StudyRoomBean {
         }catch (Exception ex){
             throw new MyIllegalArgumentException("Error persisting your data");
         }
+
+
+        //Owner will be added as a user
+        newStudyRoom.addStudents((Student) channel.getOwner());
+        ((Student) channel.getOwner()).addRoom(newStudyRoom);
 
         channel.addRooms(newStudyRoom);
         entityManager.flush();

@@ -12,6 +12,10 @@ import java.util.List;
         @NamedQuery(
                 name = "getAllStudyRooms",
                 query = "SELECT room FROM StudyRoom room ORDER BY room.title"
+        ),
+        @NamedQuery(
+                name = "getAllStudyRoomsByStudent",
+                query = "SELECT r FROM StudyRoom r JOIN r.students s WHERE s.id = :id ORDER BY r.title"
         )
 })
 @Table(name = "STUDYROOMS")
