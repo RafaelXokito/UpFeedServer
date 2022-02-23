@@ -172,12 +172,12 @@ public class ConfigBean {
 
             System.out.println("## StudyRooms ");
             System.out.println("### Creating StudyRoom ");
-            long studyRoomDAE = studyRoomBean.create(channelDAE, "Estudo DAE", "Easy 27");
-            studyRoomBean.addStudentToStudyRoom(studyRoomDAE,"1113@my.ipleiria.pt");
-            studyRoomBean.addStudentToStudyRoom(studyRoomDAE,"1114@my.ipleiria.pt");
-            studyRoomBean.addStudentToStudyRoom(studyRoomDAE,"1115@my.ipleiria.pt");
+            long studyRoom3AnoDAE = studyRoomBean.create(channel3AnoStudent, "Estudo DAE", "Easy 27");
+            studyRoomBean.addStudentToStudyRoom(studyRoom3AnoDAE,"1113@my.ipleiria.pt");
+            studyRoomBean.addStudentToStudyRoom(studyRoom3AnoDAE,"1114@my.ipleiria.pt");
+            studyRoomBean.addStudentToStudyRoom(studyRoom3AnoDAE,"1115@my.ipleiria.pt");
 
-            studyRoomBean.removeStudentToStudyRoom(studyRoomDAE,"1115@my.ipleiria.pt");
+            studyRoomBean.removeStudentToStudyRoom(studyRoom3AnoDAE,"1115@my.ipleiria.pt");
 
             long studyRoom3AnoStudent = studyRoomBean.create(channel3AnoStudent, "Le Gang B T Q i +", "Easy 39");
             studyRoomBean.addStudentToStudyRoom(studyRoom3AnoStudent,"1111@my.ipleiria.pt");
@@ -188,7 +188,7 @@ public class ConfigBean {
             studyRoomBean.addStudentToStudyRoom(studyRoom3AnoStudent,"1117@my.ipleiria.pt");
 
             System.out.println("### Updating StudyRoom ");
-            studyRoomBean.update(studyRoomDAE,"Estudo", "Secção de estudo da UC de Desenvolvimento de Aplicações Empresariais");
+            studyRoomBean.update(studyRoom3AnoDAE,"Estudo", "Secção de estudo da UC de Desenvolvimento de Aplicações Empresariais");
             System.out.println("### Deleting StudyRoom ");
             //studyRoomBean.delete(studyRoomDAE);
 
