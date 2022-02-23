@@ -11,6 +11,10 @@ import java.util.List;
         @NamedQuery(
                 name = "getAllChannels",
                 query = "SELECT channel FROM Channel channel ORDER BY channel.title"
+        ),
+        @NamedQuery(
+                name = "getAllChannelsByUser",
+                query = "SELECT c FROM Channel c JOIN c.users u WHERE u.id = :id ORDER BY c.id"
         )
 })
 @Table(name = "CHANNELS")

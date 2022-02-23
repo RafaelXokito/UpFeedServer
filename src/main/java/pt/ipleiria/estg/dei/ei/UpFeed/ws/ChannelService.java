@@ -2,17 +2,18 @@ package pt.ipleiria.estg.dei.ei.UpFeed.ws;
 
 import pt.ipleiria.estg.dei.ei.UpFeed.dtos.*;
 import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.ChannelBean;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.Channel;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.SubjectRoom;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.Teacher;
-import pt.ipleiria.estg.dei.ei.UpFeed.entities.User;
+import pt.ipleiria.estg.dei.ei.UpFeed.ejbs.PersonBean;
+import pt.ipleiria.estg.dei.ei.UpFeed.entities.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -20,36 +21,53 @@ import java.util.stream.Collectors;
 @Path("channels") // relative url web path for this service
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
+@RolesAllowed({"Student","Teacher"})
 public class ChannelService {
     @EJB
     private ChannelBean channelBean;
+
+    @EJB
+    private PersonBean personBean;
+
+    @Context
+    private SecurityContext securityContext;
 
     private static final Logger logger = Logger.getLogger("ws.ChannelService");
 
     @GET
     @Path("/")
-    public Response getAllChannelsWS() {
+    public Response getAllChannelsWS(@HeaderParam("Authorization") String auth) throws Exception{
+        Person person = personBean.getPersonByAuthToken(auth);
+
         return Response.status(Response.Status.OK)
-                .entity(toDTOs(channelBean.getAllChannels()))
+                .entity(toDTOs(channelBean.getAllChannelsByUser(person.getId())))
                 .build();
     }
 
     @GET
     @Path("{id}")
-    @RolesAllowed({"Channel"})
-    public Response getChannelWS(@PathParam("id") long id) throws Exception {
-        Channel channel = channelBean.findChannel(id);
+    public Response getChannelWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
 
-        return Response.status(Response.Status.OK)
-                .entity(toDTO(channel))
+        Channel channel = channelBean.findChannel(id);
+        for (User index :channel.getUsers()) {
+            if (person.getId().equals(index.getId()))
+                return Response.status(Response.Status.OK)
+                        .entity(toDTO(channel))
+                        .build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED)
+                .entity("This channel dont belong to you")
                 .build();
     }
 
     @POST
     @Path("/")
-    public Response createChannelWS(ChannelDTO channelDTO) throws Exception {
+    public Response createChannelWS(@HeaderParam("Authorization") String auth, ChannelDTO channelDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
         long id = channelBean.create(
-                2L, //TODO  - GETS THE AUTHENTICATED USER ID
+                person.getId(),
                 channelDTO.getTitle(),
                 channelDTO.getDescription(),
                 channelDTO.getType(),
@@ -64,7 +82,15 @@ public class ChannelService {
 
     @POST
     @Path("/{id}/students")
-    public Response associateStudentToChannelWS(@PathParam("id") long id, ChannelDTO channelDTO) throws Exception {
+    public Response associateStudentToChannelWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id, ChannelDTO channelDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        Channel checkChannel = channelBean.findChannel(id);
+        if (!checkChannel.getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This channel dont belong to you")
+                    .build();
+
         for (UserDTO userDTO : channelDTO.getUsers()) {
             try {
                 channelBean.addUserToChannel(id, userDTO.getEmail());
@@ -82,7 +108,14 @@ public class ChannelService {
 
     @DELETE
     @Path("/{id}/students")
-    public Response desassociateStudentToChannelRoomWS(@PathParam("id") long id, ChannelDTO channelDTO) throws Exception {
+    public Response desassociateStudentToChannelRoomWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id, ChannelDTO channelDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        Channel checkChannel = channelBean.findChannel(id);
+        if (!checkChannel.getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This channel dont belong to you")
+                    .build();
 
         for (UserDTO userDTO : channelDTO.getUsers()) {
             try {
@@ -101,8 +134,15 @@ public class ChannelService {
 
     @PUT
     @Path("{id}")
-    @RolesAllowed({"Channel"})
-    public Response updateChannelWS(@PathParam("id") long id,ChannelDTO channelDTO) throws Exception {
+    public Response updateChannelWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id,ChannelDTO channelDTO) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        Channel checkChannel = channelBean.findChannel(id);
+        if (!checkChannel.getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This channel dont belong to you")
+                    .build();
+
         channelBean.update(
                 id,
                 channelDTO.getTitle(),
@@ -118,8 +158,15 @@ public class ChannelService {
 
     @DELETE
     @Path("{id}")
-    @RolesAllowed({"Channel"})
-    public Response deleteChannelWS(@PathParam("id") long id) throws Exception {
+    public Response deleteChannelWS(@HeaderParam("Authorization") String auth, @PathParam("id") long id) throws Exception {
+        Person person = personBean.getPersonByAuthToken(auth);
+
+        Channel checkChannel = channelBean.findChannel(id);
+        if (!checkChannel.getOwner().getId().equals(person.getId()))
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("This channel dont belong to you")
+                    .build();
+
         if (channelBean.delete(id))
             return Response.status(Response.Status.OK)
                     .entity("Channel "+id+" deleted!")

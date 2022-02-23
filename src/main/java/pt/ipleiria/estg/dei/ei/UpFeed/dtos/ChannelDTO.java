@@ -40,6 +40,15 @@ public class ChannelDTO {
         this.users = users;
     }
 
+    public ChannelDTO(Long id, UserDTO user, String title, String description, Boolean type, Integer weight) {
+        this.id = id;
+        this.user = user;
+        this.title = title;
+        this.description = description;
+        this.type = type;
+        this.weight = weight;
+    }
+
     public ChannelDTO(String title, String description, Integer weight, List<UserDTO> users) {
         this.title = title;
         this.description = description;

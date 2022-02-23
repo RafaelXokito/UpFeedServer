@@ -73,6 +73,15 @@ public class ChannelBean {
     }
 
     /***
+     * Execute Channel query getAllChannelsByUser getting all Channels Class by User id
+     * @param id User id
+     * @return a list of All Channels
+     */
+    public List<Channel> getAllChannelsByUser(Long id) {
+        return entityManager.createNamedQuery("getAllChannelsByUser", Channel.class).setParameter("id", id).setLockMode(LockModeType.OPTIMISTIC).getResultList();
+    }
+
+    /***
      * Creating a Channel by Authenticated User
      * @param ownerId @Id:id of channel owner, its @Id from authenticated User, we already know who they are
      * @param title of channel
