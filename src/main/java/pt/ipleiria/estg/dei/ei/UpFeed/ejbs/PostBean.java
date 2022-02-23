@@ -113,6 +113,15 @@ public class PostBean {
     }
 
     /**
+     * Retrieves all posts
+     * @param id user id
+     * @return the list of Posts in the Posts table
+     */
+    public List<Post> getAllPostsByUser(Long id){
+        return (List<Post>) entityManager.createNamedQuery("getAllPostsByUser").setParameter("id", id).getResultList();
+    }
+
+    /**
      * Updates the title and description of the post
      * @param id
      * @param title

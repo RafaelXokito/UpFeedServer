@@ -10,6 +10,10 @@ import java.util.Date;
         @NamedQuery(
             name="getAllPosts",
             query="SELECT p FROM Post p ORDER BY p.id"
+        ),
+        @NamedQuery(
+                name = "getAllPostsByUser",
+                query = "SELECT p FROM Post p WHERE p.owner.id = :id ORDER BY p.id"
         )
 })
 @Table(name = "POSTS")
